@@ -1,0 +1,113 @@
+{% extends "home/base.html" %}
+{% load static %}
+{% block content %}
+{% if user.is_authenticated %}
+<body>
+<div class="upper-navbar">
+    <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+        <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="{% url 'home' %}">My Finance</a>
+        <ul class="navbar-nav px-3">
+            <li class="nav-item text-nowrap">
+                <a class="nav-link" href="{% url 'logout' %}">Sign out</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+<div class="container-fluid">
+<div class="row">
+<nav class="col-md-2 d-none d-md-block bg-light sidebar">
+<div class="sidebar-sticky">
+<ul class="nav flex-column">
+<li class="nav-item">
+<a class="nav-link active" href="{% url 'home' %}">
+<span data-feather="home"></span>
+              Home <span class="sr-only">(current)</span>
+</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="">
+<span data-feather="shopping-cart"></span>
+              PEA
+            </a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="">
+<span data-feather="shopping-cart"></span>
+              Immobilier
+            </a>
+</li>
+<hr/>
+<li class="nav-item">
+<a class="nav-link" href="{% url 'profile' %}">
+<span data-feather="users"></span>
+              Profil
+</a>
+</ul>
+</div>
+</nav>
+</div>
+</div>
+<main class="col-md-9 ml-sm-auto col-lg-10 px-4" role="main">
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+<h1 class="h2">Home</h1>
+<div class="btn-toolbar mb-2 mb-md-0">
+<div class="btn-group mr-2">
+<button class="btn btn-sm btn-outline-secondary" type="button">Share</button>
+</div>
+<button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button">
+<span data-feather="calendar"></span>
+            This week
+          </button>
+</div>
+</div>
+<!-- ./HEADER -->
+    <div class="container my-5">
+        <div class="row">
+        </div>
+        </div>
+    </div>
+</main>
+</div>
+</div>
+</body>
+
+{% else %}
+<head>
+    <link type="text/css" rel="stylesheet" href="{% static 'home/css/main.css' %}"/>
+</head>
+<body>
+    <header>
+        <div class="img-back">
+            <div class="filter">
+                <nav class="navbar navbar-expand-lg navbar-dark">
+                        <a class="navbar-brand" href="{% url 'home' %}">My Finance</a>
+                        <button class="navbar-toggler" data-toggle="collapse" data-target="#hidden">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse justify-content-end" id="hidden">
+                            <ul class="navbar-nav justify-content-end">
+                                <li class="nav-item">
+                                    <a class="nav-link text-white" href="{% url 'register' %}">Register</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-white" href="{% url 'login' %}">Login</a>
+                                </li>
+                            </ul>
+                            <form class="form-inline my-2 my-lg-0">
+                                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                            </form>
+                        </div>
+                    </nav>
+                <div class="title">
+                    <h1>My Finance</h1>
+                    <h2>La gestion au quotidien</h2>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+</body>
+{% endif %}
+
+{% endblock content %}

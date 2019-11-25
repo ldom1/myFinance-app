@@ -1,0 +1,120 @@
+{% load static %}
+{% load crispy_forms_tags %}
+<!DOCTYPE html>
+<html>
+
+{% if user.is_authenticated %}
+<head>
+
+
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+<meta content="" name="description"/>
+<meta content="Mark Otto, Jacob Thornton, and Bootstrap contributors" name="author"/>
+<meta content="Jekyll v3.8.5" name="generator"/>
+<title>Stoma</title>
+
+<!-- Bootstrap core CSS -->
+<link crossorigin="anonymous" href="{% static 'home/css/bootstrap.min.css' %}" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" rel="stylesheet"/>
+
+<link type="text/css" rel="stylesheet" href="{% static 'home/css/animate.css' %}"/>
+<link href="{% static 'home/css/dashboard.css' %}" rel="stylesheet"/>
+<link href="{% static 'home/css/listings_styles.css' %}" rel="stylesheet"/>
+<link href="{% static 'home/css/listings_responsive.css' %}" rel="stylesheet"/>
+<link href="{% static 'home/css/fontawesome-all.css' %}" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/metro/4.2.40/css/metro-icons.css" rel="stylesheet"/>
+<link type="text/css" rel="stylesheet" href="{% static 'calendrier/css/calendrier.css' %}"/>
+
+<style>
+        h1, h2, h3, h4, h5, h6
+        {
+            color:black;
+            -webkit-font-smoothing: antialiased;
+        }
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+
+      .upper-navbar {
+        height: 7vh;
+      }
+
+    </style>
+<!-- Custom styles for this template -->
+</head>
+
+{% else %}
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+<meta content="" name="description"/>
+<meta content="Mark Otto, Jacob Thornton, and Bootstrap contributors" name="author"/>
+<meta content="Jekyll v3.8.5" name="generator"/>
+<title>My Finance</title>
+
+<!-- Bootstrap core CSS -->
+<link href="https://fonts.googleapis.com/css?family=Krub:300,400,700|Merriweather:400,700" rel="stylesheet">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+<link type="text/css" rel="stylesheet" href="{% static 'home/css/animate.css' %}"/>
+<link href="{% static 'home/css/dashboard.css' %}" rel="stylesheet"/>
+<link href="{% static 'home/css/listings_styles.css' %}" rel="stylesheet"/>
+<link href="{% static 'home/css/listings_responsive.css' %}" rel="stylesheet"/>
+<link href="{% static 'home/css/fontawesome-all.css' %}" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/metro/4.2.40/css/metro-icons.css" rel="stylesheet"/>
+<link type="text/css" rel="stylesheet" href="{% static 'calendrier/css/calendrier.css' %}"/>
+
+<style type="text/css">
+    .img-back {
+    background-image: url({% static "home/home_page.jpg" %});
+    background-position: center, center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+}
+</style>
+</head>
+{% endif %}
+
+<body>
+    {% block content %}
+
+    {% endblock %}
+</body>
+
+
+
+<script crossorigin="anonymous" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script>window.jQuery || document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.slim.min.js"><\/script>')</script>
+<script crossorigin="anonymous" integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o" src="{% static 'home/js/bootstrap.bundle.min.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.9.0/feather.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
+<script src="{% static 'home/js/wow.min.js' %}"></script> 
+<script src="{% static 'home/js/Chart.js' %}"></script> 
+
+<script src="{% static 'home/js/jquery.waypoints.min.js' %}"></script> 
+<script src="{% static 'home/js/main.js' %}"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/javascript.util/0.12.12/javascript.util.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.0.3/chroma.min.js"></script>
+
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+<script src="{% static 'home/js/dashboard.js' %}"></script>
+<script src="{% static 'home/js/listings_custom.js' %}"></script>
+
+<script language="JavaScript" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+
+
+</html>
