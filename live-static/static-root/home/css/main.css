@@ -1,0 +1,187 @@
+/*
+** BASE
+*/
+body {
+    font-family: krub;
+    margin: 0px,
+    
+}
+
+h1 {
+    font-family: krub;
+    color: white;
+    font-weight: 700;  
+}
+
+h2 {
+    font-family: krub;
+    color: white;
+    font-weight: 400;
+    padding-top: 10px;
+}
+
+h3 {
+    font-family: krub;
+    margin-top: 40px;
+}
+
+h4 {
+    font-family: krub;
+    margin-top: 10px;
+}
+
+h5 {
+    font-family: krub;
+    color: white;
+}
+
+h6 {
+    font-family: krub;
+    margin : 65px 0px;
+}
+
+/*
+** HEADER
+*/
+.filter {
+    background-color: rgba(0, 0, 0, 0.5);
+    height: 100vh;
+}
+
+.title {
+    padding-top: 250px;
+    text-align: center;
+}
+
+.navbar a {
+    text-decoration: none;
+}
+
+.navbar {
+    border-bottom: 1px solid white;
+}
+
+.img-first {
+    margin-top: 80px;
+}
+
+/*
+**FOOTER
+*/
+.footer {
+    background-color: black;
+}
+
+.fab {
+    color: black;
+}
+.btn-border {
+    border-color: white;
+}
+
+.form-news {
+    max-width: 160px;
+}
+
+.form-inline input {
+    margin-right: 2px;
+}
+
+/*
+**BOUTONS LOGO PARTAGER EN COULEURS (avec border pour display instagram sur fond noir)
+*/
+ul {
+    padding: 0px;
+}
+
+.social ul li {
+    display: inline;
+}
+
+ul li a {
+    padding: 0px;
+    color: white;
+}
+
+ul li {
+    list-style: none;
+}
+
+.link-fa {
+    padding: 8px 13px;
+    border-radius: 5px;
+    background-color: white;
+    border : 1px solid white;
+    transition: 0.2s;
+}
+
+.link-fa:hover {
+    background-color:#3b5999;
+    border : 1px solid #3b5999;
+}
+
+.link-fa:hover i {
+    color: white;
+}
+
+.link-in {
+    padding: 8px 13px;
+    border-radius: 5px;
+    background-color: white;
+    border : 1px solid white;
+    transition: 0.2s;
+}
+
+.link-in:hover {
+    background-color:black;
+    border : 1px solid white; 
+}
+
+.link-in:hover i {
+    color: white;
+}
+
+.link-you {
+    padding: 8px 12px;
+    border-radius: 5px;
+    background-color: white;
+    border : 1px solid white;
+    transition: 0.2s;
+}
+
+.link-you:hover {
+    background-color:#cd201f;
+    border : 1px solid #cd201f; 
+}
+
+.link-you:hover i {
+    color: white;
+}
+
+.link-twi {
+    padding: 8px 13px;
+    border-radius: 5px;
+    background-color: white;
+    border : 1px solid white;
+    transition: 0.2s;
+}
+
+.link-twi:hover {
+    background-color:#55acee;
+    border : 1px solid #55acee;
+}
+
+.link-twi:hover i {
+    color: white;
+}
+
+.copyright {
+    color: white;
+    font-size : 8px;
+    text-align: center;
+    margin-top: 25px;
+}
+
+.copyright p {
+    margin: 0px;
+}
