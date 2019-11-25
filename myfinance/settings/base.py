@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'users',
     'portfolio',
     'pea',
+    'funds_CA',
 ]
 
 MIDDLEWARE = [
