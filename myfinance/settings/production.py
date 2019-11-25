@@ -75,7 +75,7 @@ MIDDLEWARE = [
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/
 
-ALLOWED_HOSTS =  ['myfinance.herokuapp.com']
+ALLOWED_HOSTS =  ['myfinance-appli.herokuapp.com']
 
 STATIC_URL = '/static/'
 
