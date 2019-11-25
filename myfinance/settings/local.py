@@ -15,7 +15,7 @@ DEBUG = True
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/
 
-ALLOWED_HOSTS =  ['myfinancep.com', '127.0.0.1']
+ALLOWED_HOSTS =  ['myfinance-appli.herokuapp.com', '127.0.0.1']
 
 STATIC_URL = '/static/'
 
