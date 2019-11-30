@@ -5,6 +5,7 @@ from datetime import datetime
 class PEA(models.Model):
 
     date = models.DateTimeField(null=True, blank=True)
+    update_date = models.DateTimeField(null=True, blank=True)
     id_pea = models.IntegerField(null=True, blank=True)
     name_pea = models.CharField(max_length=200, null=True, blank=True)
     description = models.CharField(max_length=200, null=True, blank=True)

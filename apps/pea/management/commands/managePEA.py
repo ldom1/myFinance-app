@@ -9,10 +9,11 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
-        # Add data to BDD
+        # Functions
         valorise_order()
         time.sleep(10)
         valorise_pea()
         risk_pea()
         time.sleep(10)
         generateHistory()
+

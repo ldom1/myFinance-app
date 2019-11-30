@@ -4,7 +4,7 @@ import numpy as np
 
 class RegisterOrderForm(forms.Form):
 
-	PEA = apps.get_model('pea', 'PEA')
+	'''PEA = apps.get_model('pea', 'PEA')
 	fundsCA = apps.get_model('funds_CA', 'fundsCA')
 
 	pea = PEA.objects.all()
@@ -20,7 +20,7 @@ class RegisterOrderForm(forms.Form):
 	id_asset = forms.ChoiceField(choices=choices_asset, required=True)
 	initial_amount = forms.IntegerField(required=True)
 	name_pea = forms.ChoiceField(choices=choices_pea, required=True)
-	currency = forms.ChoiceField(choices=choices_curr, required=True)
+	currency = forms.ChoiceField(choices=choices_curr, required=True)'''
 
 class RegisterPeaForm(forms.Form):
 

@@ -45,6 +45,9 @@ def valorise_pea():
 		pea_orders = all_orders.filter(id_pea=id_pea)
 
 		pea.current_value = np.sum([y.current_value for y in pea_orders])
+
+		# Update date
+		pea.update_date = datetime.today()
 		pea.save()
 
 
