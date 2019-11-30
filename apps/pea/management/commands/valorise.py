@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand, CommandError
 
 # import
-from funds_CA.scripts.getFundsCA import getFundsData
+from pea.scripts.valorise import valorise_order, valorise_pea
 
 class Command(BaseCommand):
     help = 'Closes the specified poll for voting'
@@ -9,4 +9,5 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
 
         # Add data to BDD
-        getFundsData()
+        valorise_order()
+        valorise_pea()

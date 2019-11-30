@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand, CommandError
 
 # import
-from funds_CA.scripts.getFundsCA import getFundsData
+from pea.models import *
 
 class Command(BaseCommand):
     help = 'Closes the specified poll for voting'
@@ -9,4 +9,11 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
 
         # Add data to BDD
-        getFundsData()
+        pea = PEA.objects.all()
+        orders = Order.objects.all()
+
+        for p in pea:
+        	p.delete()
+
+        for order in orders:
+        	order.delete()

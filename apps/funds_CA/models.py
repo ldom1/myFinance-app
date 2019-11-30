@@ -4,7 +4,7 @@ from datetime import datetime
 # Create your models here.
 class fundsCA(models.Model):
 
-    date = models.DateTimeField(default=datetime.now, null=True, blank=True)
+    date = models.DateTimeField(null=True, blank=True)
     date_dernier_cours = models.DateTimeField(null=True, blank=True)
 
     id_fund = models.CharField(max_length=100, null=True, blank=True)

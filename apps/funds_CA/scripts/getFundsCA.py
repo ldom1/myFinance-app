@@ -13,7 +13,7 @@ import pandas as pd
 import numpy as np
 from tqdm import tqdm
 from funds_CA.models import fundsCA
-from datetime import datetime
+from datetime import datetime, date
 import time
 
 
@@ -145,6 +145,7 @@ def getFundsData():
         # Feed the database
         created = None
         fund, created = fundsCA.objects.get_or_create(
+                                date=date.today(),
                                 date_dernier_cours=date,
                                 id_fund=str(id_fund),
                                 url=url,
