@@ -17,6 +17,20 @@ class PEA(models.Model):
     def __unicode__(self):
         return "{0}".format(self.code, )
 
+class PEAHistory(models.Model):
+
+    date = models.DateTimeField(null=True, blank=True)
+    id_pea = models.IntegerField(null=True, blank=True)
+    name_pea = models.CharField(max_length=200, null=True, blank=True)
+    value =  models.FloatField(null=True, blank=True)
+    currency = models.CharField(max_length=5, null=True, blank=True)
+    risk = models.IntegerField(null=True, blank=True)
+    user_username = models.CharField(max_length=150, null=True, blank=True)
+
+
+    def __unicode__(self):
+        return "{0}".format(self.code, )
+
 class Order(models.Model):
 
     buying_date = models.DateTimeField(null=True, blank=True)
