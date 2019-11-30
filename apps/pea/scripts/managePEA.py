@@ -65,8 +65,12 @@ def risk_pea():
 			id_asset = order.id_asset
 			risk_.append(fundsCA.objects.filter(id_fund=id_asset, date=date.today())[0].risk_level)
 
-		pea.risk = np.mean(risk_)
-		pea.save()
+		try:
+			pea.risk = np.mean(risk_)
+			pea.save()
+		except Exception:
+			pea.risk = 0
+			pea.save()
 
 def generateHistory():
 

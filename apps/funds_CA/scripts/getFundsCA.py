@@ -60,7 +60,8 @@ def getFundsData():
             'https://www.boursorama.com/bourse/opcvm/cours/0P0001DWMF/',
             'https://www.boursorama.com/bourse/opcvm/cours/0P0001EONQ/',
             'https://www.boursorama.com/bourse/opcvm/cours/0P0001FFVK/',
-            'https://www.boursorama.com/bourse/opcvm/cours/0P0001HETC/', ]
+            'https://www.boursorama.com/bourse/opcvm/cours/0P0001HETC/',
+            'https://www.boursorama.com/bourse/opcvm/cours/0P00011RIT/' ]
 
     urls = set(urls)
 
