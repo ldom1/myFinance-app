@@ -46,7 +46,10 @@ def view_display_one_pea(request, name_pea):
 	risk = np.zeros(7)
 
 	for order in orders:
-		risk[order.risk-1] += 1
+		try:
+			risk[order.risk-1] += 1
+		except Exception:
+			pass
 
 	context = {'pea': pea,
 			   'pea_history': pea_history,
