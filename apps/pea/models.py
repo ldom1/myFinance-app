@@ -46,6 +46,7 @@ class Order(models.Model):
     current_value =  models.FloatField(null=True, blank=True)
     currency = models.CharField(max_length=5, null=True, blank=True)
     live = models.IntegerField(null=True, blank=True)
+    risk = models.IntegerField(null=True, blank=True)
     user_username = models.CharField(max_length=150, null=True, blank=True)
 
 

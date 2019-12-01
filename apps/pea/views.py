@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.views.generic import View, TemplateView
 from django.contrib.auth.decorators import login_required
-from django.test.client import RequestFactory
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 from django.apps import apps
 import numpy as np
 from datetime import datetime
@@ -30,6 +31,30 @@ def view_display_pea(request):
     	context = {'pea': pea}
 
     return render(request, 'pea/display_pea.html', context)
+
+
+@login_required
+def view_display_one_pea(request, name_pea):
+
+	pea = PEA.objects.filter(name_pea=name_pea, user_username=request.user.get_username())[0]
+	pea_history = PEAHistory.objects.filter(name_pea=name_pea, user_username=request.user.get_username())
+	orders = Order.objects.filter(name_pea=name_pea, user_username=request.user.get_username())
+
+	nb_orders = len(orders)
+
+	# Var for chart
+	risk = np.zeros(7)
+
+	for order in orders:
+		risk[order.risk-1] += 1
+
+	context = {'pea': pea,
+			   'pea_history': pea_history,
+			   'orders': orders,
+			   'nb_orders': nb_orders,
+			   'risk': risk}
+
+	return render(request, 'pea/display_one_pea.html', context)
 
 class view_register_new_pea(TemplateView):
 	# Form to get data
@@ -113,6 +138,11 @@ class view_register_new_order(TemplateView):
 	    	except Exception:
 	    		id_order = 1
 
+	    	fundsCA = apps.get_model('funds_CA', 'fundsCA')
+    		funds = fundsCA.objects.all()
+
+	    	risk = funds.filter(id_fund=id_asset)[0].risk_level
+
 	    	order, created = Order.objects.get_or_create(
 				            	buying_date = datetime.today(),
 				            	id_pea = id_pea,
@@ -123,12 +153,10 @@ class view_register_new_order(TemplateView):
 				            	current_value = initial_amount,
 				            	currency = currency,
 				            	live=1,
+				            	risk=risk,
 				            	user_username = request.user.get_username())
 
     	# context
-    	fundsCA = apps.get_model('funds_CA', 'fundsCA')
-    	funds = fundsCA.objects.all()
-
     	context['form'] = form
     	context['funds'] = funds
 

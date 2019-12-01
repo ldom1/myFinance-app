@@ -146,7 +146,7 @@ def getFundsData():
         # Feed the database
         created = None
         fund, created = fundsCA.objects.get_or_create(
-                                date=date.today(),
+                                date=date(date.today().year, date.today().month, date.today().day),
                                 date_dernier_cours=date,
                                 id_fund=str(id_fund),
                                 url=url,

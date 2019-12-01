@@ -5,7 +5,7 @@
 <body>
 <div class="upper-navbar">
     <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
-        <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="{% url 'home' %}">Stoma</a>
+        <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="{% url 'home' %}">My Finance</a>
         <ul class="navbar-nav px-3">
             <li class="nav-item text-nowrap">
                 <a class="nav-link" href="{% url 'logout' %}">Sign out</a>
@@ -82,45 +82,44 @@
 
     <hr/>
 
-    <div class="container my-5">
-        <div class="row">         
-            {% for p in pea %}
-            <div class="col-4">
-              <div class="card">
-                <div class="card-body">
-                  <div class="row align-items-center">
-                    <div class="col">
+    <div class="row">         
+        {% for p in pea %}
+        <div class="col-4">
+          <div class="card">
+            <div class="card-body">
+              <div class="row align-items-center">
+                <div class="col">
 
-                      <!-- Title -->
-                      <h3 class="card-title text-uppercase mb-2">
-                        {{p.name_pea}}
-                      </h3>
-                      <p>Ouverture: {{p.date}}</p>
-                      
-                      <!-- Heading -->
-                      <h6 class="h2 mb-0">
-                        {{p.current_value}} {{p.currency}}
-                      </h6>
+                  <!-- Title -->
+                  <a href="{% url 'display_one_pea' p.name_pea %}">
+                    <h3 class="card-title text-uppercase mb-2 primary">
+                      {{p.name_pea}}
+                    </h3>
+                  </a>
+                  <p>Mis à jour le: {{p.update_date}}</p>
+                  <p>Ouverture: {{p.date}}</p>
+                  
+                  <!-- Heading -->
+                  <h6 class="h2 mb-0">
+                    {{p.current_value}} {{p.currency}}
+                  </h6>
 
-                      <!-- Badge -->
-                      <p class="badge badge-soft-success mt-n1">
-                        Risque: {{p.risk}}
-                      </p>
+                  <!-- Badge -->
+                  <p class="badge badge-soft-success mt-n1">
+                    Risque: {{p.risk}}
+                  </p>
 
-                    </div>
-                    <div class="col-auto">
-                      <!-- Icon -->
-                      <span class="h2 fe fe-dollar-sign mb-0"></span>
-                    </div>
-                  </div> <!-- / .row -->
                 </div>
-              </div>
+                <div class="col-auto">
+                  <!-- Icon -->
+                  <span class="h2 fe fe-dollar-sign mb-0"></span>
+                </div>
+              </div> <!-- / .row -->
             </div>
-          {% endfor %}
+          </div>
         </div>
+      {% endfor %}
     </div>
-
-
 
 </main>
 </div>
