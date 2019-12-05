@@ -9,9 +9,12 @@ class PEA(models.Model):
     id_pea = models.IntegerField(null=True, blank=True)
     name_pea = models.CharField(max_length=200, null=True, blank=True)
     description = models.CharField(max_length=200, null=True, blank=True)
-    current_value =  models.FloatField(null=True, blank=True)
+    initial_amount = models.FloatField(null=True, blank=True)
+    current_value = models.FloatField(null=True, blank=True)
     currency = models.CharField(max_length=5, null=True, blank=True)
     risk = models.IntegerField(null=True, blank=True)
+    global_variation = models.FloatField(null=True, blank=True)
+    interday_variation = models.FloatField(null=True, blank=True)
     user_username = models.CharField(max_length=150, null=True, blank=True)
 
 
@@ -47,6 +50,8 @@ class Order(models.Model):
     currency = models.CharField(max_length=5, null=True, blank=True)
     live = models.IntegerField(null=True, blank=True)
     risk = models.IntegerField(null=True, blank=True)
+    global_variation = models.FloatField(null=True, blank=True)
+    interday_variation = models.FloatField(null=True, blank=True)
     user_username = models.CharField(max_length=150, null=True, blank=True)
 
 

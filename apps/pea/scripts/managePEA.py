@@ -44,7 +44,12 @@ def valorise_pea():
 		id_pea = pea.id_pea
 		pea_orders = all_orders.filter(id_pea=id_pea)
 
-		pea.current_value = np.sum([y.current_value for y in pea_orders])
+		current_value = np.sum([y.current_value for y in pea_orders])
+		initial_amount = np.sum([y.initial_amount for y in pea_orders])
+
+		pea.current_value = current_value
+		pea.initial_amount = initial_amount
+		pea.variation = (current_value - initial_amount)/initial_amount*100
 
 		# Update date
 		pea.update_date = datetime.today()
@@ -55,25 +60,20 @@ def risk_pea():
 
 	all_pea = PEA.objects.all()
 	all_orders = Order.objects.all()
-	all_funds = Order.objects.all()
 
 	for pea in all_pea:
 
 		id_pea = pea.id_pea
 		pea_orders = all_orders.filter(id_pea=id_pea)
 
-		risk_ = []
-
-		for order in pea_orders:
-			id_asset = order.id_asset
-			risk_.append(fundsCA.objects.filter(id_fund=id_asset, date=date.today())[0].risk_level)
-
 		try:
-			pea.risk = np.mean(risk_)
-			pea.save()
+			pea.current_value = np.mean([y.risk for y in pea_orders])
 		except Exception:
-			pea.risk = 0
-			pea.save()
+			pea.current_value = 0
+
+		# Update date
+		pea.update_date = datetime.today()
+		pea.save()
 
 def generateHistory():
 
@@ -90,4 +90,34 @@ def generateHistory():
                                 currency=pea.currency,
                                 risk=pea.risk,
                                 user_username=pea.user_username)
+
+
+def variationPeaValue():
+
+	all_hist_pea = PEAHistory.objects.all().order_by('date')
+	all_pea = PEA.objects.all()
+
+	for pea in all_pea:
+
+		pea_hist = all_hist_pea.filter(name_pea=pea.name_pea)
+
+		try:
+			value_list = [y.value for y in pea_hist]
+			yesterday_value = value_list[-2]
+			today_value = value_list[-1]
+
+			variation = (today_value-yesterday_value)/yesterday_value*100
+
+			# Feed pea database
+			pea.variation = variation
+			pea.save()
+
+		except Exception as e:
+			print(e)
+			pea.variation = None
+			pea.save()
+		
+
+
+
 

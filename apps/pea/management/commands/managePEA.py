@@ -2,7 +2,7 @@ from django.core.management.base import BaseCommand, CommandError
 
 # import
 import time
-from pea.scripts.managePEA import valorise_order, valorise_pea, risk_pea, generateHistory
+from pea.scripts.managePEA import valorise_order, valorise_pea, risk_pea, generateHistory, variationPeaValue
 
 class Command(BaseCommand):
     help = 'Closes the specified poll for voting'
@@ -16,4 +16,6 @@ class Command(BaseCommand):
         risk_pea()
         time.sleep(10)
         generateHistory()
+        time.sleep(10)
+        variationPeaValue()
 

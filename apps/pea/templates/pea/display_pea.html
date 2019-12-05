@@ -107,9 +107,18 @@
                   <p>Ouverture: {{p.date}}</p>
                   
                   <!-- Heading -->
-                  <h6 class="h2 mb-0">
-                    {{p.current_value}} {{p.currency}}
+                  
+                  <h6 class="h2 mb-0" style="color:blue;">
+                    {{p.current_value |floatformat}} {{p.currency}}
                   </h6>
+                  {% if p.variation >= 0 %}
+                  <h6 class="h4 mb-0" style="color:green;">
+                  {% else %}
+                  <h6 class="h4 mb-0" style="color:red;">
+                  {% endif %}
+                    {{p.variation |floatformat}} %
+                  </h6>
+                  
 
                   <!-- Badge -->
                   <p class="badge badge-soft-success mt-n1">
