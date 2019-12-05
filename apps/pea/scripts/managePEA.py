@@ -75,23 +75,6 @@ def risk_pea():
 		pea.update_date = datetime.today()
 		pea.save()
 
-def generateHistory():
-
-	all_pea = PEA.objects.all()
-
-	for pea in all_pea:
-
-		created = None
-		fund, created = PEAHistory.objects.get_or_create(
-                                date=date.today(),
-                                id_pea=pea.id_pea,
-                                name_pea=pea.name_pea,
-                                value=pea.current_value,
-                                currency=pea.currency,
-                                risk=pea.risk,
-                                user_username=pea.user_username)
-
-
 def variationInterdayPeaValue():
 
 	all_hist_pea = PEAHistory.objects.all().order_by('date')
@@ -116,6 +99,27 @@ def variationInterdayPeaValue():
 			print(e)
 			pea.variation = None
 			pea.save()
+
+def generateHistory():
+
+	all_pea = PEA.objects.all()
+
+	for pea in all_pea:
+
+		created = None
+		fund, created = PEAHistory.objects.get_or_create(
+                                date=date.today(),
+                                id_pea=pea.id_pea,
+                                name_pea=pea.name_pea,
+                                value=pea.current_value,
+                                currency=pea.currency,
+                                risk=pea.risk,
+                                global_variation=pea.global_variation,
+                                interday_variation=pea.interday_variation,
+                                user_username=pea.user_username)
+
+
+
 		
 
 
