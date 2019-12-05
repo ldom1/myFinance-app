@@ -10,10 +10,10 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
 
         # Functions
-        #valorise_order()
+        valorise_order()
         time.sleep(10)
         valorise_pea()
-        #risk_pea()
+        risk_pea()
         time.sleep(10)
         variationInterdayPeaValue()
         time.sleep(10)
