@@ -49,7 +49,7 @@ def valorise_pea():
 
 		pea.current_value = current_value
 		pea.initial_amount = initial_amount
-		pea.variation = (current_value - initial_amount)/initial_amount*100
+		pea.global_variation = (current_value - initial_amount)/initial_amount*100
 
 		# Update date
 		pea.update_date = datetime.today()
@@ -92,7 +92,7 @@ def generateHistory():
                                 user_username=pea.user_username)
 
 
-def variationPeaValue():
+def variationInterdayPeaValue():
 
 	all_hist_pea = PEAHistory.objects.all().order_by('date')
 	all_pea = PEA.objects.all()
@@ -109,7 +109,7 @@ def variationPeaValue():
 			variation = (today_value-yesterday_value)/yesterday_value*100
 
 			# Feed pea database
-			pea.variation = variation
+			pea.interday_variation = variation
 			pea.save()
 
 		except Exception as e:
