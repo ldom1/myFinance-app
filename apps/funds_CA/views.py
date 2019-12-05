@@ -14,7 +14,7 @@ from .models import *
 @login_required
 def view_display_funds(request):
 
-    funds = fundsCA.objects.all().order_by('id_fund')
+    funds = fundsCA.objects.all().order_by('id_fund').order_by('date')
     context = {'funds': funds}
 
     return render(request, 'funds_CA/display_funds.html', context)
