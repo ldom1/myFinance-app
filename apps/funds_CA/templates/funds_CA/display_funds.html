@@ -1,0 +1,102 @@
+{% extends "home/base.html" %}
+{% load static %}
+{% block content %}
+{% load crispy_forms_tags %} 
+<body>
+<div class="upper-navbar">
+    <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+        <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="{% url 'home' %}">My Finance</a>
+        <ul class="navbar-nav px-3">
+            <li class="nav-item text-nowrap">
+                <a class="nav-link" href="{% url 'logout' %}">Sign out</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+<div class="container-fluid">
+<div class="row">
+<nav class="col-md-2 d-none d-md-block bg-light sidebar">
+<div class="sidebar-sticky">
+<ul class="nav flex-column">
+<li class="nav-item">
+<a class="nav-link" href="{% url 'home' %}">
+<span data-feather="home"></span>
+              Home <span class="sr-only">(current)</span>
+</a>
+</li>
+<li class="nav-item">
+<a class="nav-link active" href="{% url 'display_pea' %}">
+<span data-feather="shopping-cart"></span>
+              PEA
+            </a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="">
+<span data-feather="shopping-cart"></span>
+              Immobilier
+            </a>
+</li>
+<hr/>
+<li class="nav-item">
+<a class="nav-link" href="{% url 'profile' %}">
+<span data-feather="users"></span>
+              Profil
+</a>
+</ul>
+</div>
+</nav>
+</div>
+</div>
+<main class="col-md-9 ml-sm-auto col-lg-10 px-4" role="main">
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+<h1 class="h2">{{pea.name_pea}}</h1>
+<div class="btn-toolbar mb-2 mb-md-0">
+<div class="btn-group mr-2">
+<button class="btn btn-sm btn-outline-secondary" type="button">Share</button>
+</div>
+<button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button">
+<span data-feather="calendar"></span>
+            This week
+          </button>
+</div>
+</div>
+<!-- ./HEADER -->
+
+<div class="row">
+  <div class="col-md-8 order-md-1">
+      <h4>Funds</h4>
+        <div class="table-responsive">
+          <table class="table table-striped table-sm">
+            <thead>
+              <tr>
+              	<th>ID</th>
+                <th>date</th>
+                <th>Name</th>
+                <th>Current value</th>
+                <th>Currency</th>
+                <th>Risk</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for fund in funds %}
+              <tr>
+              	<td>{{fund.id_fund}}</td>
+                <td>{{fund.date}}</td>
+                <td>{{fund.name}}</td>
+                <td>{{fund.value}}</td>
+                <td>{{fund.currency}}</td>
+                <td>{{fund.risk_level}}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>   
+        </div>
+    </div>
+  </div>
+
+</main>
+</div>
+</div>
+</body>
+
+{% endblock content %}

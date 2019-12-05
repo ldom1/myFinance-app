@@ -13,7 +13,7 @@ import pandas as pd
 import numpy as np
 from tqdm import tqdm
 from funds_CA.models import fundsCA
-from datetime import datetime, date
+import datetime
 import time
 
 
@@ -122,7 +122,7 @@ def getFundsData():
             date = datetime(int(date[2]), int(date[1]), int(date[0]))
         except Exception as e:
             print(e)
-            date = date_
+            date = None
 
         # Risk
         risk_ = all_code('div', 'c-faceplate__quotation c-faceplate__quotation--new-line c-faceplate__quotation--margin-top')[0]
@@ -145,8 +145,9 @@ def getFundsData():
 
         # Feed the database
         created = None
+        today = datetime.datetime.today()
         fund, created = fundsCA.objects.get_or_create(
-                                date=date(date.today().year, date.today().month, date.today().day),
+                                date=datetime.date(today.year, today.month, today.day),
                                 date_dernier_cours=date,
                                 id_fund=str(id_fund),
                                 url=url,
