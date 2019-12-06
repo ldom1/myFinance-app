@@ -51,29 +51,34 @@ def valorise_pea():
 		pea.initial_amount = initial_amount
 		pea.global_variation = (current_value - initial_amount)/initial_amount*100
 
+		# Risk
+		try:
+			pea.risk = np.mean([y.risk for y in pea_orders])
+		except Exception:
+			pea.risk = 0
+
 		# Update date
 		pea.update_date = datetime.today()
 		pea.save()
 
-
-def risk_pea():
+def generateHistory():
 
 	all_pea = PEA.objects.all()
-	all_orders = Order.objects.all()
 
 	for pea in all_pea:
 
-		id_pea = pea.id_pea
-		pea_orders = all_orders.filter(id_pea=id_pea)
+		created = None
+		fund, created = PEAHistory.objects.get_or_create(
+                                date=date.today(),
+                                id_pea=pea.id_pea,
+                                name_pea=pea.name_pea,
+                                value=pea.current_value,
+                                currency=pea.currency,
+                                risk=pea.risk,
+                                global_variation=pea.global_variation,
+                                interday_variation=pea.interday_variation,
+                                user_username=pea.user_username)
 
-		try:
-			pea.current_value = np.mean([y.risk for y in pea_orders])
-		except Exception:
-			pea.current_value = 0
-
-		# Update date
-		pea.update_date = datetime.today()
-		pea.save()
 
 def variationInterdayPeaValue():
 
@@ -97,30 +102,8 @@ def variationInterdayPeaValue():
 
 		except Exception as e:
 			print(e)
-			pea.variation = None
+			pea.interday_variation = None
 			pea.save()
-
-def generateHistory():
-
-	all_pea = PEA.objects.all()
-
-	for pea in all_pea:
-
-		created = None
-		fund, created = PEAHistory.objects.get_or_create(
-                                date=date.today(),
-                                id_pea=pea.id_pea,
-                                name_pea=pea.name_pea,
-                                value=pea.current_value,
-                                currency=pea.currency,
-                                risk=pea.risk,
-                                global_variation=pea.global_variation,
-                                interday_variation=pea.interday_variation,
-                                user_username=pea.user_username)
-
-
-
-		
 
 
 
