@@ -10,7 +10,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
 
         # Functions
-        #valorise_order()
+        valorise_order()
         time.sleep(10)
         valorise_pea()
         time.sleep(10)
