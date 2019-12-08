@@ -6,7 +6,7 @@ Created on Sun Nov 24 22:18:45 2019
 @author: louisgiron
 """
 import numpy as np
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 import time
 
 from funds_CA.models import fundsCA
@@ -26,7 +26,7 @@ def valorise_order():
 
 		funds = fundsCA.objects.filter(id_fund=ord_id_asset)
 
-		initial_fund_value = funds.filter(date=ord_buying_date)[0].value
+		yesterday_fund_value = funds.filter(date=date.today() + timedelta(days=-1))[0].value
 		current_fund_value = funds.filter(date=date.today())[0].value
 		
 		variation = (current_fund_value - initial_fund_value)/initial_fund_value
@@ -40,26 +40,47 @@ def valorise_pea():
 	all_orders = Order.objects.all()
 
 	for pea in all_pea:
-
-		id_pea = pea.id_pea
-		pea_orders = all_orders.filter(id_pea=id_pea)
-
-		current_value = np.sum([y.current_value for y in pea_orders])
-		initial_amount = np.sum([y.initial_amount for y in pea_orders])
-
-		pea.current_value = current_value
-		pea.initial_amount = initial_amount
-		pea.global_variation = (current_value - initial_amount)/initial_amount*100
-
-		# Risk
 		try:
-			pea.risk = np.mean([y.risk for y in pea_orders])
-		except Exception:
-			pea.risk = 0
+			print(pea.name_pea)
+			id_pea = pea.id_pea
+			pea_orders = all_orders.filter(id_pea=id_pea)
 
-		# Update date
-		pea.update_date = datetime.today()
-		pea.save()
+			# all infos
+			try:
+				current_value = np.sum([y.current_value for y in pea_orders])
+				pea.current_value = current_value
+			except Exception as e:
+				print(e)
+				pea.current_value = 0.
+
+			try:
+				initial_amount = np.sum([y.initial_amount for y in pea_orders])
+				pea.initial_amount = initial_amount
+			except Exception as e:
+				print(e)
+				pea.initial_amount = 0.
+
+			try:
+				current_value = np.sum([y.current_value for y in pea_orders])
+				initial_amount = np.sum([y.initial_amount for y in pea_orders])
+				pea.global_variation = (current_value - initial_amount)/initial_amount*100
+			except Exception as e:
+				print(e)
+				pea.global_variation = 0.
+
+			try:
+				pea.risk = np.mean([y.risk for y in pea_orders])
+			except Exception as e:
+				print(e)
+				pea.risk = 0
+
+			# Update date
+			pea.update_date = datetime.today()
+			pea.save()
+		except Exception as e:
+			print(e)
+			pass
+
 
 def generateHistory():
 
@@ -68,7 +89,7 @@ def generateHistory():
 	for pea in all_pea:
 
 		created = None
-		fund, created = PEAHistory.objects.get_or_create(
+		pea_history, created = PEAHistory.objects.get_or_create(
                                 date=date.today(),
                                 id_pea=pea.id_pea,
                                 name_pea=pea.name_pea,
