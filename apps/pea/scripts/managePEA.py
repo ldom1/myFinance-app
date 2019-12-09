@@ -29,7 +29,7 @@ def valorise_order():
 		yesterday_fund_value = funds.filter(date=date.today() + timedelta(days=-1))[0].value
 		current_fund_value = funds.filter(date=date.today())[0].value
 		
-		variation = (current_fund_value - initial_fund_value)/initial_fund_value
+		variation = (current_fund_value - yesterday_fund_value)/yesterday_fund_value
 
 		order.current_value = variation*ord_initial_amount + ord_initial_amount
 		order.save()
