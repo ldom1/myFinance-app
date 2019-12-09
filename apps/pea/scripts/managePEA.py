@@ -20,18 +20,14 @@ def valorise_order():
 
 	for order in all_orders:
 
-		ord_id_asset = order.id_asset
-		ord_buying_date = date(order.buying_date.year, order.buying_date.month, order.buying_date.day)
-		ord_initial_amount = order.initial_amount
+		current_value = order.current_value
 
 		funds = fundsCA.objects.filter(id_fund=ord_id_asset)
 
 		yesterday_fund_value = funds.filter(date=date.today() + timedelta(days=-1))[0].value
 		current_fund_value = funds.filter(date=date.today())[0].value
-		
-		variation = (current_fund_value - yesterday_fund_value)/yesterday_fund_value
 
-		order.current_value = variation*ord_initial_amount + ord_initial_amount
+		order.current_value = current_value*current_fund_value/yesterday_fund_value
 		order.save()
 
 def valorise_pea():
