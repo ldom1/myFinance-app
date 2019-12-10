@@ -16,8 +16,10 @@ class RegisterOrderForm(forms.Form):
 	choices_curr = [[1, 'Choose...']] + [['EUR', 'EUR']] + [['USD', 'USD']]
 	choices_pea = [[1, 'Choose...']] + [[y, y] for y in unique_pea]
 	choices_asset = [[1, 'Choose...']] + [[y, y] for y in unique_funds]
+	choices_type_asset = [[1, 'Choose...']] + [['fond', 'fond']] + [['action', 'action']]
 
 	id_asset = forms.ChoiceField(choices=choices_asset, required=True)
+	type_asset = forms.ChoiceField(choices=choices_type_asset, required=True)
 	initial_amount = forms.IntegerField(required=True)
 	name_pea = forms.ChoiceField(choices=choices_pea, required=True)
 	currency = forms.ChoiceField(choices=choices_curr, required=True)

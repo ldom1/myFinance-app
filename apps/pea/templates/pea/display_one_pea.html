@@ -113,7 +113,7 @@
           </svg>
         </div>
         <div class="media-body">
-          <h3 class="mb-2">{{pea.variation |floatformat }} % </h3>
+          <h3 class="mb-2">{{pea.global_variation |floatformat}} </h3>
           <div class="mb-0">Variation</div>
         </div>
       </div>
@@ -158,7 +158,9 @@
           <table class="table table-striped table-sm">
             <thead>
               <tr>
+                <th>Type</th>
                 <th>ID</th>
+                <th>Name</th>
                 <th>Buying date</th>
                 <th>Initial amount</th>
                 <th>Current value</th>
@@ -170,7 +172,9 @@
             <tbody>
               {% for order in orders %}
               <tr>
+                <td>{{order.type_asset}}</td>
                 <td>{{order.id_asset}}</td>
+                <td>{{order.name_asset}}</td>
                 <td>{{order.buying_date}}</td>
                 <td>{{order.initial_amount}}</td>
                 <td>{{order.current_value}}</td>

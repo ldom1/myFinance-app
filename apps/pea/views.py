@@ -8,6 +8,7 @@ from django.apps import apps
 import numpy as np
 from datetime import datetime
 
+from funds_CA.models import fundsCA
 from .forms import *
 from .models import *
 
@@ -127,6 +128,7 @@ class view_register_new_order(TemplateView):
     	form = RegisterOrderForm(request.POST)
 
     	if form.is_valid():
+    		type_asset = form.cleaned_data['type_asset']
 	    	id_asset = form.cleaned_data['id_asset']
 	    	initial_amount = form.cleaned_data['initial_amount']
 	    	currency = form.cleaned_data['currency']
@@ -136,6 +138,7 @@ class view_register_new_order(TemplateView):
 	    	pea = PEA.objects.filter(name_pea=name_pea, user_username=request.user.get_username())
 	    	order = Order.objects.filter(user_username=request.user.get_username())
 	    	id_pea = pea[0].id_pea
+
 	    	try:
 	    		id_order = np.int(np.max([y.id_order for y in order]) + 1)
 	    	except Exception:
@@ -144,10 +147,13 @@ class view_register_new_order(TemplateView):
 	    	fundsCA = apps.get_model('funds_CA', 'fundsCA')
     		funds = fundsCA.objects.all()
 
+    		funds_name = funds.filter(id_fund=id_asset)[0].name
 	    	risk = funds.filter(id_fund=id_asset)[0].risk_level
 
 	    	order, created = Order.objects.get_or_create(
 				            	buying_date = datetime.today(),
+				            	type_asset=type_asset,
+				            	name_asset=funds_name,
 				            	id_pea = id_pea,
 				            	id_order = id_order,
 				            	name_pea = name_pea,

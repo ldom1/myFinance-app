@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'portfolio',
     'pea',
     'funds_CA',
+    'assets',
 ]
 
 MIDDLEWARE = [

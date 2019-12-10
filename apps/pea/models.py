@@ -47,6 +47,8 @@ class Order(models.Model):
     id_pea = models.IntegerField(null=True, blank=True)
     name_pea = models.CharField(max_length=200, null=True, blank=True)
     id_asset = models.CharField(max_length=70, null=True, blank=True)
+    name_asset = models.CharField(max_length=200, null=True, blank=True)
+    type_asset = models.CharField(max_length=10, null=True, blank=True)
     initial_amount = models.FloatField(null=True, blank=True) 
     current_value =  models.FloatField(null=True, blank=True)
     currency = models.CharField(max_length=5, null=True, blank=True)
