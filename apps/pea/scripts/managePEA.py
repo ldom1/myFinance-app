@@ -21,10 +21,11 @@ def valorise_order():
 	for order in all_orders:
 
 		current_value = order.current_value
+		ord_id_asset = order.id_asset
 
 		funds = fundsCA.objects.filter(id_fund=ord_id_asset)
 
-		yesterday_fund_value = funds.filter(date=date.today() + timedelta(days=-1))[0].value
+		yesterday_fund_value = funds.filter(date=date.today() + timedelta(days=-4))[0].value
 		current_fund_value = funds.filter(date=date.today())[0].value
 
 		order.current_value = current_value*current_fund_value/yesterday_fund_value
