@@ -10,6 +10,7 @@ from datetime import datetime, date, timedelta
 import time
 
 from funds_CA.models import fundsCA
+from assets.models import Assets
 from pea.models import PEA, Order, PEAHistory
 
 
@@ -22,14 +23,31 @@ def valorise_order():
 
 		current_value = order.current_value
 		ord_id_asset = order.id_asset
+		type_asset = order.type_asset
 
-		funds = fundsCA.objects.filter(id_fund=ord_id_asset)
+		try:
+			if type_asset == 'action':
 
-		yesterday_fund_value = funds.filter(date=date.today() + timedelta(days=-4))[0].value
-		current_fund_value = funds.filter(date=date.today())[0].value
+				asset = Assets.objects.filter(id_asset=ord_id_asset)
 
-		order.current_value = current_value*current_fund_value/yesterday_fund_value
-		order.save()
+				yesterday_fund_value = asset.filter(date=date.today() + timedelta(days=-1))[0].value
+				current_fund_value = asset.filter(date=date.today())[0].value
+
+				order.current_value = current_value*current_fund_value/yesterday_fund_value
+				order.save()
+
+			else:
+				funds = fundsCA.objects.filter(id_fund=ord_id_asset)
+
+				yesterday_fund_value = funds.filter(date=date.today() + timedelta(days=-1))[0].value
+				current_fund_value = funds.filter(date=date.today())[0].value
+
+				order.current_value = current_value*current_fund_value/yesterday_fund_value
+				order.save()
+		except Exception as e:
+			print(e)
+			pass
+
 
 def valorise_pea():
 

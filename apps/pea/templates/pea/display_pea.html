@@ -63,21 +63,28 @@
 <!-- ./HEADER -->
     <div class="container my-5">
         <div class="row">
-          <div class="col-md-4 order-md-1">
+          <div class="col-md-3 order-md-1">
             <a href="{% url 'register_pea' %}">
                 <button type="button" class="btn btn-outline-primary">
                     Créer un PEA
                 </button>
             </a> 
           </div>
-          <div class="col-md-4 order-md-1">
-            <a href="{% url 'register_order' %}">
+          <div class="col-md-3 order-md-2">
+            <a href="{% url 'register_order_assets' %}">
                 <button type="button" class="btn btn-outline-primary">
-                    Ajouter un ordre
+                    Ajouter un ordre - Actions
                 </button>
             </a> 
           </div>
-          <div class="col-md-4 order-md-1">
+          <div class="col-md-3 order-md-3">
+            <a href="{% url 'register_order_funds' %}">
+                <button type="button" class="btn btn-outline-primary">
+                    Ajouter un ordre - Fonds
+                </button>
+            </a> 
+          </div>
+          <div class="col-md-3 order-md-4">
             <a href="{% url 'display_funds' %}">
                 <button type="button" class="btn btn-outline-primary">
                     Check Funds CA

@@ -44,7 +44,7 @@ def view_display_one_pea(request, name_pea):
 	nb_orders = len(orders)
 
 	# Var for chart
-	risk = np.zeros(7)
+	risk = np.zeros(8)
 
 	for order in orders:
 		try:
@@ -105,31 +105,28 @@ class view_register_new_pea(TemplateView):
     	return render(request, self.template_name, context)
 
 
-class view_register_new_order(TemplateView):
+class view_register_new_order_funds(TemplateView):
 	# Form to get data
-    template_name = 'pea/register_new_order.html'
+    template_name = 'pea/register_new_order_funds.html'
 
     def get(self, request):
     	context = {}
 
-    	form = RegisterOrderForm()
-
-    	fundsCA = apps.get_model('funds_CA', 'fundsCA')
-    	funds = fundsCA.objects.all()
+    	form = RegisterOrderFundsForm()
 
     	# context
     	context['form'] = form
-    	context['funds'] = funds
+
     	return render(request, self.template_name, context)
 
     def post(self, request):
     	context = {}
 
-    	form = RegisterOrderForm(request.POST)
+    	form = RegisterOrderFundsForm(request.POST)
 
     	if form.is_valid():
     		type_asset = form.cleaned_data['type_asset']
-	    	id_asset = form.cleaned_data['id_asset']
+	    	name = form.cleaned_data['name']
 	    	initial_amount = form.cleaned_data['initial_amount']
 	    	currency = form.cleaned_data['currency']
 	    	name_pea = form.cleaned_data['name_pea']
@@ -147,13 +144,13 @@ class view_register_new_order(TemplateView):
 	    	fundsCA = apps.get_model('funds_CA', 'fundsCA')
     		funds = fundsCA.objects.all()
 
-    		funds_name = funds.filter(id_fund=id_asset)[0].name
-	    	risk = funds.filter(id_fund=id_asset)[0].risk_level
+	    	risk = funds.filter(name=name)[0].risk_level
+	    	id_asset = funds.filter(name=name)[0].id_fund
 
 	    	order, created = Order.objects.get_or_create(
 				            	buying_date = datetime.today(),
 				            	type_asset=type_asset,
-				            	name_asset=funds_name,
+				            	name_asset=name,
 				            	id_pea = id_pea,
 				            	id_order = id_order,
 				            	name_pea = name_pea,
@@ -167,6 +164,66 @@ class view_register_new_order(TemplateView):
 
     	# context
     	context['form'] = form
-    	context['funds'] = funds
+
+    	return render(request, self.template_name, context)
+
+
+class view_register_new_order_asset(TemplateView):
+	# Form to get data
+    template_name = 'pea/register_new_order_asset.html'
+
+    def get(self, request):
+    	context = {}
+
+    	form = RegisterOrderAssetForm()
+
+    	# context
+    	context['form'] = form
+    	return render(request, self.template_name, context)
+
+    def post(self, request):
+    	context = {}
+
+    	form = RegisterOrderAssetForm(request.POST)
+
+    	if form.is_valid():
+    		type_asset = form.cleaned_data['type_asset']
+	    	name = form.cleaned_data['name']
+	    	initial_amount = form.cleaned_data['initial_amount']
+	    	currency = form.cleaned_data['currency']
+	    	name_pea = form.cleaned_data['name_pea']
+
+	    	# Get the pea
+	    	pea = PEA.objects.filter(name_pea=name_pea, user_username=request.user.get_username())
+	    	order = Order.objects.filter(user_username=request.user.get_username())
+	    	id_pea = pea[0].id_pea
+
+	    	try:
+	    		id_order = np.int(np.max([y.id_order for y in order]) + 1)
+	    	except Exception:
+	    		id_order = 1
+
+	    	assets = apps.get_model('assets', 'Assets')
+    		asset = assets.objects.all()
+
+	    	id_asset = asset.filter(name=name)[0].id_asset
+
+	    	order, created = Order.objects.get_or_create(
+				            	buying_date = datetime.today(),
+				            	type_asset=type_asset,
+				            	name_asset=name,
+				            	id_pea = id_pea,
+				            	id_order = id_order,
+				            	name_pea = name_pea,
+				            	id_asset = id_asset,
+				            	initial_amount = initial_amount,
+				            	current_value = initial_amount,
+				            	currency = currency,
+				            	live=1,
+				            	risk=8,
+				            	user_username = request.user.get_username())
+
+    	# context
+    	context['form'] = form
 
     	return render(request, self.template_name, context)
