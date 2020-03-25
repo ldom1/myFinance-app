@@ -12,26 +12,26 @@ from funds_CA.models import fundsCA
 from .forms import *
 from .models import *
 
-
 @login_required
 def view_display_pea(request):
 
-    id_pea = request.GET.get('get_id')
+	id_pea = request.GET.get('get_id')
 
-    if id_pea:
+	if id_pea:
 
-	    pea_to_delete = PEA.objects.filter(id_pea=id_pea, user_username=request.user.get_username())
-	    for pea in pea_to_delete:
-	    	pea.delete()
+		pea_to_delete = PEA.objects.filter(id_pea=id_pea, user_username=request.user.get_username())
+		for pea in pea_to_delete:
+			pea.delete()
 
-    pea = PEA.objects.filter(user_username=request.user.get_username())
+	pea = PEA.objects.filter(user_username=request.user.get_username())
 
-    if len(pea) == 0:
-    	context = {}
-    else:
-    	context = {'pea': pea}
+	if len(pea) == 0:
+		context = {}
+	else:
+		context = {'pea': pea}
 
-    return render(request, 'pea/display_pea.html', context)
+	return render(request, 'pea/display_pea.html', context)
+
 
 
 @login_required
