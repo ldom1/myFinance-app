@@ -14,61 +14,119 @@
     </nav>
 </div>
 <div class="container-fluid">
-<div class="row">
-<nav class="col-md-2 d-none d-md-block bg-light sidebar">
-<div class="sidebar-sticky">
-<ul class="nav flex-column">
-<li class="nav-item">
-<a class="nav-link active" href="{% url 'home' %}">
-<span data-feather="home"></span>
-              Home <span class="sr-only">(current)</span>
-</a>
-</li>
-<li class="nav-item">
-<a class="nav-link" href="{% url 'display_pea' %}">
-<span data-feather="shopping-cart"></span>
-              PEA
-            </a>
-</li>
-<li class="nav-item">
-<a class="nav-link" href="">
-<span data-feather="shopping-cart"></span>
-              Immobilier
-            </a>
-</li>
-<hr/>
-<li class="nav-item">
-<a class="nav-link" href="{% url 'profile' %}">
-<span data-feather="users"></span>
-              Profil
-</a>
-</ul>
-</div>
-</nav>
-</div>
+    <div class="row">
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+            <div class="sidebar-sticky">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'home' %}">
+                            <span data-feather="home"></span>
+                            Home <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'display_pea' %}">
+                            <span data-feather="shopping-cart"></span>
+                            PEA
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="">
+                            <span data-feather="shopping-cart"></span>
+                            Immobilier
+                        </a>
+                    </li>
+                    <hr/>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'profile' %}">
+                            <span data-feather="users"></span>
+                            Profil
+                        </a>
+                </ul>
+            </div>
+        </nav>
+    </div>
 </div>
 <main class="col-md-9 ml-sm-auto col-lg-10 px-4" role="main">
-<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-<h1 class="h2">Home</h1>
-<div class="btn-toolbar mb-2 mb-md-0">
-<div class="btn-group mr-2">
-<button class="btn btn-sm btn-outline-secondary" type="button">Share</button>
-</div>
-<button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button">
-<span data-feather="calendar"></span>
-            This week
-          </button>
-</div>
-</div>
-<!-- ./HEADER -->
-    <div class="container my-5">
-        <div class="row">
-        </div>
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Home</h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+            <div class="btn-group mr-2">
+                <button class="btn btn-sm btn-outline-secondary" type="button">Share</button>
+            </div>
+            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button">
+                <span data-feather="calendar"></span>
+                This week
+            </button>
         </div>
     </div>
+    <!-- ./HEADER -->
+    <div class="row">
+        {% for asset in assets_infos %}
+        <div class="col-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-12">
+                            <!-- Title -->
+                            <h3 class="card-title text-uppercase mb-2 primary">
+                                {{asset.name}}
+                            </h3>
+                            <p>Mis à jour le: {{asset.date_update}}</p>
+                        </div>
+                        <!-- Heading -->
+                        <div class="col-6">
+                            <p style="color:blue;">
+                                Current value: {{asset.value |floatformat}} €
+                            </p>
+                            <p style="color:green;">
+                                <strong>Dividende: {{asset.dividende |floatformat}} €</strong>
+                            </p>
+                            {% if asset.variation < 0 %}
+                            <p style="color:red;">
+                                {% else %}
+                            <p style="color:green;">
+                                {% endif %}
+                                Variation: {{asset.variation |floatformat}}
+                            </p>
+                        </div>
+                        <div class="col-6">
+                            {% if asset.var_1_week < 0 %}
+                            <p style="color:red;">
+                                {% else %}
+                            <p style="color:green;">
+                                {% endif %}
+                                Var (1 week) {{asset.var_1_week |floatformat}}
+                            </p>
+                            {% if asset.var_1_month < 0 %}
+                            <p style="color:red;">
+                                {% else %}
+                            <p style="color:green;">
+                                {% endif %}
+                                <strong>Var (1 month) {{asset.var_1_month |floatformat}}</strong>
+                            </p>
+                            {% if asset.var_3_month < 0 %}
+                            <p style="color:red;">
+                                {% else %}
+                            <p style="color:green;">
+                                {% endif %}
+                                Var (3 month) {{asset.var_3_month |floatformat}}
+                            </p>
+                        </div>
+
+
+                        <div class="col-auto">
+                            <!-- Icon -->
+                            <span class="h2 fe fe-dollar-sign mb-0"></span>
+                        </div>
+                    </div> <!-- / .row -->
+                </div>
+            </div>
+        </div>
+        </br>
+        {% endfor %}
+    </div>
 </main>
-</div>
-</div>
 </body>
 
 {% else %}
@@ -76,37 +134,37 @@
     <link type="text/css" rel="stylesheet" href="{% static 'home/css/main.css' %}"/>
 </head>
 <body>
-    <header>
-        <div class="img-back">
-            <div class="filter">
-                <nav class="navbar navbar-expand-lg navbar-dark">
-                        <a class="navbar-brand" href="{% url 'home' %}">My Finance</a>
-                        <button class="navbar-toggler" data-toggle="collapse" data-target="#hidden">
-                            <span class="navbar-toggler-icon"></span>
-                        </button>
-                        <div class="collapse navbar-collapse justify-content-end" id="hidden">
-                            <ul class="navbar-nav justify-content-end">
-                                <li class="nav-item">
-                                    <a class="nav-link text-white" href="{% url 'register' %}">Register</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-white" href="{% url 'login' %}">Login</a>
-                                </li>
-                            </ul>
-                            <form class="form-inline my-2 my-lg-0">
-                                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                            </form>
-                        </div>
-                    </nav>
-                <div class="title">
-                    <h1>My Finance</h1>
-                    <h2>La gestion au quotidien</h2>
+<header>
+    <div class="img-back">
+        <div class="filter">
+            <nav class="navbar navbar-expand-lg navbar-dark">
+                <a class="navbar-brand" href="{% url 'home' %}">My Finance</a>
+                <button class="navbar-toggler" data-toggle="collapse" data-target="#hidden">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse justify-content-end" id="hidden">
+                    <ul class="navbar-nav justify-content-end">
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="{% url 'register' %}">Register</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="{% url 'login' %}">Login</a>
+                        </li>
+                    </ul>
+                    <form class="form-inline my-2 my-lg-0">
+                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                    </form>
                 </div>
+            </nav>
+            <div class="title">
+                <h1>My Finance</h1>
+                <h2>La gestion au quotidien</h2>
             </div>
         </div>
-    </header>
-    
+    </div>
+</header>
+
 </body>
 {% endif %}
 
