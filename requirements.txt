@@ -9,9 +9,6 @@ certifi==2018.11.29
 chardet==3.0.4
 click==7.1.1
 clyent==1.2.1
-conda==4.8.3
-conda-build==2.1.5
-conda-package-handling==1.6.0
 datashape==0.5.2
 decorator==4.4.2
 dj-database-url==0.5.0
