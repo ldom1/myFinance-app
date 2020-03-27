@@ -3,14 +3,14 @@ from assets.models import Assets, AssetsInfo
 from datetime import timedelta, datetime, date
 
 
-def get_info_for_one_asset_for_one_date(asset, date):
-    a = asset.filter(date=date)[0]
+def get_info_for_one_asset_for_one_date(asset, date_of_compute):
+    a = asset.filter(date=date_of_compute)[0]
     value = a.value
     variation = a.variation
     dividende = a.dividende
 
     try:
-        a_3_month = asset.filter(date=date + timedelta(days=-90))[0]
+        a_3_month = asset.filter(date=date_of_compute + timedelta(days=-90))[0]
         value_3_month = a_3_month.value
         var_3_month = round((value - value_3_month) / value_3_month * 100, 2)
     except Exception as e:
@@ -19,7 +19,7 @@ def get_info_for_one_asset_for_one_date(asset, date):
         var_3_month = None
 
     try:
-        a_1_month = asset.filter(date=date + timedelta(days=-30))[0]
+        a_1_month = asset.filter(date=date_of_compute + timedelta(days=-30))[0]
         value_1_month = a_1_month.value
         var_1_month = round((value - value_1_month) / value_1_month * 100, 2)
     except Exception as e:
@@ -28,7 +28,7 @@ def get_info_for_one_asset_for_one_date(asset, date):
         var_1_month = None
 
     try:
-        a_1_week = asset.filter(date=date + timedelta(days=-7))[0]
+        a_1_week = asset.filter(date=date_of_compute + timedelta(days=-7))[0]
         value_1_week = a_1_week.value
         var_1_week = round((value - value_1_week) / value_3_month * 100, 2)
     except Exception as e:
@@ -36,8 +36,8 @@ def get_info_for_one_asset_for_one_date(asset, date):
         value_1_week = None
         var_1_week = None
 
-    date_over_3_months = [y.date for y in asset.filter(date__gte=date + timedelta(days=-30))]
-    value_over_3_months = [y.value for y in asset.filter(date__gte=date + timedelta(days=-30))]
+    date_over_3_months = [y.date for y in asset.filter(date__gte=date_of_compute + timedelta(days=-30))]
+    value_over_3_months = [y.value for y in asset.filter(date__gte=date_of_compute + timedelta(days=-30))]
 
     return value, variation, dividende, value_3_month, var_3_month, value_1_month, var_1_month, value_1_week, var_1_week, value_over_3_months, date_over_3_months
 

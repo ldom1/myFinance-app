@@ -87,7 +87,7 @@
                                 {% else %}
                             <p style="color:green;">
                                 {% endif %}
-                                Variation: {{asset.variation |floatformat}}
+                                Variation: {{asset.variation |floatformat}} %
                             </p>
                         </div>
                         <div class="col-6">
@@ -96,21 +96,21 @@
                                 {% else %}
                             <p style="color:green;">
                                 {% endif %}
-                                Var (1 week) {{asset.var_1_week |floatformat}}
+                                Var (1 week) {{asset.var_1_week |floatformat}} %
                             </p>
                             {% if asset.var_1_month < 0 %}
                             <p style="color:red;">
                                 {% else %}
                             <p style="color:green;">
                                 {% endif %}
-                                <strong>Var (1 month) {{asset.var_1_month |floatformat}}</strong>
+                                <strong>Var (1 month) {{asset.var_1_month |floatformat}} % </strong>
                             </p>
                             {% if asset.var_3_month < 0 %}
                             <p style="color:red;">
                                 {% else %}
                             <p style="color:green;">
                                 {% endif %}
-                                Var (3 month) {{asset.var_3_month |floatformat}}
+                                Var (3 month) {{asset.var_3_month |floatformat}} %
                             </p>
                         </div>
 
