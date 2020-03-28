@@ -83,6 +83,7 @@ def get_asset_info():
             )
         else:
             asset = asset[0]
+            asset.date_update = date_today
             asset.value = value
             asset.variation = variation
             asset.dividende = dividende
