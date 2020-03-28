@@ -3,7 +3,7 @@ from assets.models import AssetsInfo
 
 
 def view_home(request):
-    assets_infos = AssetsInfo.objects.all().order_by('dividende', 'variation').reverse()
+    assets_infos = AssetsInfo.objects.all().order_by('-dividende', 'value')
 
     context = {'assets_infos': assets_infos}
 
