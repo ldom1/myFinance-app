@@ -1,6 +1,12 @@
 import numpy as np
 from assets.models import Assets, AssetsInfo
 from datetime import timedelta, datetime, date
+from tqdm import tqdm
+
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 def get_info_for_one_asset_for_one_date(asset, date_of_compute):
@@ -46,9 +52,11 @@ def get_asset_info():
     today = datetime.today()
     date_today = date(today.year, today.month, today.day)
 
+    logger.info('Getting assets infos for:', date_today)
+
     assets = Assets.objects.all()
 
-    for id_asset in np.unique([y.id_asset for y in assets]):
+    for id_asset in tqdm(np.unique([y.id_asset for y in assets])):
 
         asset = assets.filter(id_asset=id_asset)
         asset_info = AssetsInfo.objects.filter(id_asset=id_asset)
