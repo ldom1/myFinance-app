@@ -82,7 +82,7 @@ def get_asset_info():
                 # value_over_3_months=value_over_3_months
             )
         else:
-            asset = asset[0]
+            asset = asset_info[0]
             asset.date_update = date_today
             asset.value = value
             asset.variation = variation
