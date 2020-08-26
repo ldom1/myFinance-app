@@ -5,7 +5,7 @@ import numpy as np
 class RegisterOrderFundsForm(forms.Form):
 
 	PEA = apps.get_model('pea', 'PEA')
-	fundsCA = apps.get_model('funds_CA', 'fundsCA')
+	fundsCA = apps.get_model('funds_ca', 'fundsCA')
 
 	pea = PEA.objects.all()
 	funds = fundsCA.objects.all()

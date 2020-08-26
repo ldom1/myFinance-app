@@ -8,7 +8,7 @@ from django.apps import apps
 import numpy as np
 from datetime import datetime
 
-from funds_CA.models import fundsCA
+from funds_ca.models import fundsCA
 from .forms import *
 from .models import *
 

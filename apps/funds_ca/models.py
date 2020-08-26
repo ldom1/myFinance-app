@@ -1,8 +1,9 @@
 from django.db import models
-
+from datetime import datetime
 
 # Create your models here.
 class fundsCA(models.Model):
+
     date = models.DateTimeField(null=True, blank=True)
     date_dernier_cours = models.DateTimeField(null=True, blank=True)
 
@@ -16,4 +17,4 @@ class fundsCA(models.Model):
     net_asset = models.FloatField(null=True, blank=True)
 
     def __unicode__(self):
-        return "{0}".format(self.code, )
+    	return "{0}".format(self.code, )

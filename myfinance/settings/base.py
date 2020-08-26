@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'users',
     'portfolio',
     'pea',
-    'funds_CA',
+    'funds_ca',
     'assets',
 ]
 
