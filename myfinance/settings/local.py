@@ -10,12 +10,13 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 from .base import *
+
 DEBUG = True
 
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/
 
-ALLOWED_HOSTS =  ['myfinance-appli.herokuapp.com', '127.0.0.1']
+ALLOWED_HOSTS = ['myfinance-appli.herokuapp.com', '127.0.0.1']
 
 STATIC_URL = '/static/'
 

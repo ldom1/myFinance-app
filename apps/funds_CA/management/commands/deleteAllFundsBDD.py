@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand, CommandError
-from apps.funds_ca.models import fundsCA
+from funds_ca.models import fundsCA
 
 
 class Command(BaseCommand):
