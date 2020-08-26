@@ -60,7 +60,7 @@ INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
     'portfolio',
     'pea',
-    'funds_ca',
+    'funds_CA',
     'assets',
 ]
 
