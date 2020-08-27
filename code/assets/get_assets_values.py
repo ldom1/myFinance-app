@@ -132,13 +132,11 @@ def extract_dividende_of_asset_from_one_page(html_code_extracted):
         dividende = html_code_extracted[0]('p', 'c-list-info__value u-color-big-stone')[14].get_text().strip()
         dividende = float(dividende.split()[0])
         date_dividende = html_code_extracted[0]('p', 'c-list-info__value u-color-big-stone')[15].get_text().strip()
-        date_dividende = datetime.datetime.strptime(date_dividende, '%d.%m.%y')
     except Exception as e:
         logging.info(f'Assets - Scrap one page: extract dividende from code - Error: {e}')
         try:
             dividende = 0
             date_dividende = html_code_extracted[0]('p', 'c-list-info__value u-color-big-stone')[14].get_text().strip()
-            date_dividende = datetime.datetime.strptime(date_dividende, '%d.%m.%y')
         except Exception as e:
             logging.info(f'Assets - Scrap one page: extract dividende from code - Error: {e}')
             dividende = 0
