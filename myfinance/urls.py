@@ -30,6 +30,7 @@ urlpatterns = [
     path('', include('home.urls')),
     path('', include('pea.urls')),
     path('', include('funds_CA.urls')),
+    path('', include('assets.urls')),
 ]
 
 urlpatterns += staticfiles_urlpatterns()

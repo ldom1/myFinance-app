@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     'pea',
     'funds_CA',
     'assets',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
