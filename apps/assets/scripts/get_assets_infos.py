@@ -61,38 +61,43 @@ def get_asset_info():
         asset = assets.filter(id_asset=id_asset)
         asset_info = AssetsInfo.objects.filter(id_asset=id_asset)
 
-        (value, variation, dividende, value_3_month, var_3_month, value_1_month, var_1_month, value_1_week, var_1_week,
-         value_over_3_months, date_over_3_months) = get_info_for_one_asset_for_one_date(asset, date_today)
+        try:
 
-        if asset_info.count() == 0:
-            assetinfo, created = AssetsInfo.objects.get_or_create(
-                date_update=date_today,
-                id_asset=id_asset,
-                name=asset[0].name,
-                value=value,
-                variation=variation,
-                dividende=dividende,
-                value_3_month=value_3_month,
-                value_1_month=value_1_month,
-                value_1_week=value_1_week,
-                var_3_month=var_3_month,
-                var_1_month=var_1_month,
-                var_1_week=var_1_week,
-                # date_over_3_months=date_over_3_months,
-                # value_over_3_months=value_over_3_months
-            )
-        else:
-            asset = asset_info[0]
-            asset.date_update = date_today
-            asset.value = value
-            asset.variation = variation
-            asset.dividende = dividende
-            asset.value_3_month = value_3_month
-            asset.value_1_month = value_1_month
-            asset.value_1_week = value_1_week
-            asset.var_3_month = var_3_month
-            asset.var_1_month = var_1_month
-            asset.var_1_week = var_1_week
-            # asset.date_over_3_months = date_over_3_months
-            # asset.value_over_3_months = value_over_3_months
-            asset.save()
+            (value, variation, dividende, value_3_month, var_3_month, value_1_month, var_1_month, value_1_week, var_1_week,
+             value_over_3_months, date_over_3_months) = get_info_for_one_asset_for_one_date(asset, date_today)
+
+            if asset_info.count() == 0:
+                assetinfo, created = AssetsInfo.objects.get_or_create(
+                    date_update=date_today,
+                    id_asset=id_asset,
+                    name=asset[0].name,
+                    value=value,
+                    variation=variation,
+                    dividende=dividende,
+                    value_3_month=value_3_month,
+                    value_1_month=value_1_month,
+                    value_1_week=value_1_week,
+                    var_3_month=var_3_month,
+                    var_1_month=var_1_month,
+                    var_1_week=var_1_week,
+                    # date_over_3_months=date_over_3_months,
+                    # value_over_3_months=value_over_3_months
+                )
+            else:
+                asset = asset_info[0]
+                asset.date_update = date_today
+                asset.value = value
+                asset.variation = variation
+                asset.dividende = dividende
+                asset.value_3_month = value_3_month
+                asset.value_1_month = value_1_month
+                asset.value_1_week = value_1_week
+                asset.var_3_month = var_3_month
+                asset.var_1_month = var_1_month
+                asset.var_1_week = var_1_week
+                # asset.date_over_3_months = date_over_3_months
+                # asset.value_over_3_months = value_over_3_months
+                asset.save()
+
+        except Exception as e:
+            print(e)
