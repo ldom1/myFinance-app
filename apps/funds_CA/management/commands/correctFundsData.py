@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand, CommandError
 from datetime import date
 
-from apps.funds_CA.models import fundsCA
+from funds_CA.models import fundsCA
 
 
 class Command(BaseCommand):
