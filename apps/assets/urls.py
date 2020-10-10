@@ -4,6 +4,7 @@ from . import views
 
 router = routers.DefaultRouter()
 router.register(r'assets_info', views.AssetsInfoViewSet)
+router.register(r'assets_info_top_5', views.Top5AssetsInfoViewSet)
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
