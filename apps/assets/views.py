@@ -10,5 +10,5 @@ class AssetsInfoViewSet(viewsets.ModelViewSet):
 
 
 class Top5AssetsInfoViewSet(viewsets.ModelViewSet):
-    queryset = AssetsInfo.objects.all().order_by('-dividende', 'value')[:5]
+    queryset = AssetsInfo.objects.all().exclude(name__isnull=True).order_by('-dividende', 'value')[:5]
     serializer_class = AssetsInfoSerializer
