@@ -52,7 +52,7 @@ def get_asset_info():
     today = datetime.today()
     date_today = date(today.year, today.month, today.day)
 
-    logger.info('Getting assets infos for:', date_today)
+    logger.info('Get asset info: Getting assets infos for:', date_today)
 
     assets = Assets.objects.all()
 
@@ -61,12 +61,14 @@ def get_asset_info():
         asset = assets.filter(id_asset=id_asset)
         asset_info = AssetsInfo.objects.filter(id_asset=id_asset)
 
+        logger.info(f'Get asset info: Getting {asset[0].name} infos')
+
         try:
 
             (value, variation, dividende, value_3_month, var_3_month, value_1_month, var_1_month, value_1_week, var_1_week,
              value_over_3_months, date_over_3_months) = get_info_for_one_asset_for_one_date(asset, date_today)
 
-            if asset_info.count() == 0:
+            if asset_info.count() == 0 and asset[0].name:
                 assetinfo, created = AssetsInfo.objects.get_or_create(
                     date_update=date_today,
                     id_asset=id_asset,
@@ -83,7 +85,7 @@ def get_asset_info():
                     # date_over_3_months=date_over_3_months,
                     # value_over_3_months=value_over_3_months
                 )
-            else:
+            elif asset[0].name:
                 asset = asset_info[0]
                 asset.date_update = date_today
                 asset.value = value
@@ -98,6 +100,9 @@ def get_asset_info():
                 # asset.date_over_3_months = date_over_3_months
                 # asset.value_over_3_months = value_over_3_months
                 asset.save()
+            else:
+                logger.info(f'Get asset info: Asset considered {asset[0].name}')
+
 
         except Exception as e:
-            print(e)
+            logger.info(f'Get asset info - error: {e}')
