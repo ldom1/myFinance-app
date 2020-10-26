@@ -1,16 +1,40 @@
+from pylab import *
+
 from assets.scripts.quantpy.portfolio import Portfolio
 
-import requests
+import logging
 
-url = "https://apidojo-yahoo-finance-v1.p.rapidapi.com/auto-complete"
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
-querystring = {"region":"FR","q":"FR0000121014"}
 
-headers = {
-    'x-rapidapi-host': "apidojo-yahoo-finance-v1.p.rapidapi.com",
-    'x-rapidapi-key': "55bf12d4b0msh279ea37b0091a3ap14f315jsn5cb034cf2b7f"
-    }
+def get_optimal_assets(df, start, end):
+    asset_symbols = list(df['symbol'])
 
-response = requests.request("GET", url, headers=headers, params=querystring)
+    logger.info(f'Get optimal allocation: start date: {start}')
+    logger.info(f'Get optimal allocation: end date: {end}')
+    P = Portfolio(symbols=asset_symbols, start=start, end=end, bench='^GSPC')
 
-print(response.text)
+    # Add weight
+    optimal_weight = P.get_w()
+    optimal_weight = optimal_weight.reset_index()
+    optimal_weight.columns = ['symbol', 'weight']
+
+    # Add betas
+    betas = P.betas()
+    betas = betas.reset_index()
+    betas.columns = ['symbol', 'betas']
+
+    # Find the optimal weighting that yields the same return with minimum variance.
+    bb = P.ret_for_w(ones(len(asset_symbols)))
+    mm = cumsum(bb)[-1]
+    optimal_weight_low_var = P.min_var_w_ret(mm)
+    optimal_weight_low_var = optimal_weight_low_var.reset_index()
+    optimal_weight_low_var.columns = ['symbol', 'weight_low_var']
+
+    df_res = df.merge(optimal_weight, on=['symbol'], how='inner')
+    df_res = df_res.merge(betas, on=['symbol'], how='inner')
+    df_res = df_res.merge(optimal_weight_low_var, on=['symbol'], how='inner')
+    df_res = df_res.sort_values(by='weight_low_var', ascending=False)
+
+    print(df_res)

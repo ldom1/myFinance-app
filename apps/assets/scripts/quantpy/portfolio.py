@@ -1,14 +1,21 @@
-from pandas.io.data import DataReader
-from pylab import legend, xlabel, ylabel, sqrt, ylim,\
+from pandas_datareader import DataReader
+from pylab import legend, xlabel, ylabel, sqrt, ylim, \
     cov, sqrt, mean, std, plot, show, figure
-from numpy import array, zeros, matrix, ones, shape, linspace, hstack
+from numpy import array, zeros, matrix, ones, shape, linspace, hstack, busday_count
 from pandas import Series, DataFrame
 from numpy.linalg import inv
+from tqdm import tqdm
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 # Portfolio class.
 class Portfolio:
     def __init__(self, symbols, start=None, end=None, bench='^GSPC'):
+
+        logger.info(f'Get optimal allocation: class Portfolio')
 
         # Make sure input is a list
         if type(symbols) != list:
@@ -17,38 +24,59 @@ class Portfolio:
         # Create distionary to hold assets.
         self.asset = {}
 
+        nb_of_days_considered_min = int(busday_count(start, end) * .9)
+
         # Retrieve assets from data source (IE. Yahoo)
-        for symbol in symbols:
+        logger.info(f'Get optimal allocation: get assets historic')
+        symbols_considered = []
+        for symbol in tqdm(symbols):
             try:
-                self.asset[symbol] = DataReader(
-                    symbol, "yahoo", start=start, end=end)
-            except:
-                print("Asset " + str(symbol) + " not found!")
+                historical_data = DataReader(symbol, "yahoo", start=start, end=end)
+                if nb_of_days_considered_min < historical_data.shape[0]:
+                    logger.info(
+                        f'Get optimal allocation: Select asset with {nb_of_days_considered_min} days min - Asset: {symbol} with {historical_data.shape[0]} days')
+                    self.asset[symbol] = historical_data
+                    symbols_considered.append(symbol)
+            except Exception as e:
+                logger.info(f'Get optimal allocation: Asset {symbol} not found.')
+                logger.info(f'Error: {e}')
+
+        logger.info(f'Get optimal allocation: {len(symbols)} symbols (assets)')
 
         # Get Benchmark asset.
         self.benchmark = DataReader(bench, "yahoo", start=start, end=end)
         self.benchmark['Return'] = self.benchmark['Adj Close'].diff()
 
         # Get returns, beta, alpha, and sharp ratio.
-        for symbol in symbols:
+        iteration = 1
+        for symbol in symbols_considered:
+            logger.info(f'Get optimal allocation: iteration {iteration} - compute {symbol} metrics')
+            self.benchmark = self.benchmark.loc[self.benchmark.index.intersection(self.asset[symbol].index)]
+            self.asset[symbol] = self.asset[symbol].loc[self.asset[symbol].index.intersection(self.benchmark.index)]
+            logger.info(f'Get optimal allocation: iteration {iteration} - {symbol} shape: {self.asset[symbol].shape}')
+            logger.info(f'Get optimal allocation: iteration {iteration} - bench shape: {self.benchmark.shape}')
+
             # Get returns.
-            self.asset[symbol]['Return'] = \
-                self.asset[symbol]['Adj Close'].diff()
+            self.asset[symbol]['Return'] = self.asset[symbol]['Adj Close'].diff()
             # Get Beta.
             A = self.asset[symbol]['Return'].fillna(0)
             B = self.benchmark['Return'].fillna(0)
+
             self.asset[symbol]['Beta'] = cov(A, B)[0, 1] / cov(A, B)[1, 1]
             # Get Alpha
             self.asset[symbol]['Alpha'] = self.asset[symbol]['Return'] - \
-                self.asset[symbol]['Beta'] * self.benchmark['Return']
+                                          self.asset[symbol]['Beta'] * self.benchmark['Return']
 
             # Get Sharpe Ratio
             tmp = self.asset[symbol]['Return']
             self.asset[symbol]['Sharpe'] = \
                 sqrt(len(tmp)) * mean(tmp.fillna(0)) / std(tmp.fillna(0))
+            iteration += 1
+
+        self.dates_to_consider = self.benchmark.index
 
     def nplot(self, symbol, color='b', nval=0):
-        tmp = (self.benchmark if symbol == 'bench' else self.asset[symbol]) ['Adj Close'] 
+        tmp = (self.benchmark if symbol == 'bench' else self.asset[symbol])['Adj Close']
         tmp = tmp / tmp[nval]
         tmp.plot(color=color, label=symbol)
         legend(loc='best', shadow=True, fancybox=True)
@@ -62,9 +90,13 @@ class Portfolio:
         return Series(returns, index=self.asset.keys())
 
     def cov(self):
-        keys, values = self.returns().keys(), self.returns().values()
+        keys, values = self.returns().keys(), self.returns().values
+
+        values_balanced_in_dates = [y.loc[y.index.intersection(self.dates_to_consider)] for y in values]
+        values_balanced_in_dates = [y.values for y in values_balanced_in_dates]
+
         return DataFrame(
-            cov(array(values)), index=keys, columns=keys) 
+            cov(array(values_balanced_in_dates)), index=keys, columns=keys)
 
     def get_w(self, kind='sharpe'):
         V = self.cov()
@@ -73,7 +105,7 @@ class Portfolio:
         if kind == 'characteristic':
             e = matrix(ones(len(self.asset.keys()))).T
         elif kind == 'sharpe':
-            suml = [ self.returns()[symbol].sum() for symbol in self.asset.keys()]
+            suml = [self.returns()[symbol].sum() for symbol in self.asset.keys()]
             e = matrix(suml).T
         else:
             print('\n  *Error: There is no weighting for kind ' + kind)
@@ -107,7 +139,7 @@ class Portfolio:
             rets[i] = tmp.sum() * scale
             sharpe[i] = mean(tmp) / std(tmp) * sqrt(len(tmp))
             i += 1
-        risk = rets/sharpe
+        risk = rets / sharpe
         return Series(rets, index=risk), sharpe.max()
 
     def efficient_frontier_plot(self, xi=0.01, xf=4, npts=100, scale=0.1,
@@ -130,7 +162,7 @@ class Portfolio:
 
     def min_var_w_ret(self, ret):
         V = self.cov()
-        suml = [self.returns()[symbol].sum() for symbol in self.asset.keys()] 
+        suml = [self.returns()[symbol].sum() for symbol in self.asset.keys()]
         e = matrix(suml).T
         iV = matrix(inv(V))
         num = iV * e * ret
@@ -139,5 +171,5 @@ class Portfolio:
 
     def ret_for_w(self, w):
         tmp = self.returns()
-        tmpl = [v * wi for v, wi in zip(tmp.values(), w) ] 
+        tmpl = [v * wi for v, wi in zip(tmp.values, w)]
         return Series(tmpl, index=tmp.keys()).sum()
