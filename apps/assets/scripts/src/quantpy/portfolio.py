@@ -50,28 +50,31 @@ class Portfolio:
         # Get returns, beta, alpha, and sharp ratio.
         iteration = 1
         for symbol in symbols_considered:
-            logger.info(f'Get optimal allocation: iteration {iteration} - compute {symbol} metrics')
-            self.benchmark = self.benchmark.loc[self.benchmark.index.intersection(self.asset[symbol].index)]
-            self.asset[symbol] = self.asset[symbol].loc[self.asset[symbol].index.intersection(self.benchmark.index)]
-            logger.info(f'Get optimal allocation: iteration {iteration} - {symbol} shape: {self.asset[symbol].shape}')
-            logger.info(f'Get optimal allocation: iteration {iteration} - bench shape: {self.benchmark.shape}')
+            try:
+                logger.info(f'Get optimal allocation: iteration {iteration} - compute {symbol} metrics')
+                self.benchmark = self.benchmark.loc[self.benchmark.index.intersection(self.asset[symbol].index)]
+                self.asset[symbol] = self.asset[symbol].loc[self.asset[symbol].index.intersection(self.benchmark.index)]
+                logger.info(f'Get optimal allocation: iteration {iteration} - {symbol} shape: {self.asset[symbol].shape}')
+                logger.info(f'Get optimal allocation: iteration {iteration} - bench shape: {self.benchmark.shape}')
 
-            # Get returns.
-            self.asset[symbol]['Return'] = self.asset[symbol]['Adj Close'].diff()
-            # Get Beta.
-            A = self.asset[symbol]['Return'].fillna(0)
-            B = self.benchmark['Return'].fillna(0)
+                # Get returns.
+                self.asset[symbol]['Return'] = self.asset[symbol]['Adj Close'].diff()
+                # Get Beta.
+                A = self.asset[symbol]['Return'].fillna(0)
+                B = self.benchmark['Return'].fillna(0)
 
-            self.asset[symbol]['Beta'] = cov(A, B)[0, 1] / cov(A, B)[1, 1]
-            # Get Alpha
-            self.asset[symbol]['Alpha'] = self.asset[symbol]['Return'] - \
-                                          self.asset[symbol]['Beta'] * self.benchmark['Return']
+                self.asset[symbol]['Beta'] = cov(A, B)[0, 1] / cov(A, B)[1, 1]
+                # Get Alpha
+                self.asset[symbol]['Alpha'] = self.asset[symbol]['Return'] - \
+                                              self.asset[symbol]['Beta'] * self.benchmark['Return']
 
-            # Get Sharpe Ratio
-            tmp = self.asset[symbol]['Return']
-            self.asset[symbol]['Sharpe'] = \
-                sqrt(len(tmp)) * mean(tmp.fillna(0)) / std(tmp.fillna(0))
-            iteration += 1
+                # Get Sharpe Ratio
+                tmp = self.asset[symbol]['Return']
+                self.asset[symbol]['Sharpe'] = \
+                    sqrt(len(tmp)) * mean(tmp.fillna(0)) / std(tmp.fillna(0))
+                iteration += 1
+            except Exception as e:
+                logger.info(f'Get optimal allocation: iteration {iteration} - error : {e} with symbol {symbol}')
 
         self.dates_to_consider = self.benchmark.index
 

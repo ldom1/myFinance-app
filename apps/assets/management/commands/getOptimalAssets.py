@@ -16,14 +16,20 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         # Get Optimal data on all assets
-        df = pd.read_csv('id_asset_converted.csv')
-        df = df.sample(frac=1)
-        df = df.iloc[:15]
-
-        logger.info('Get optimal allocation: Data imported')
-        logger.info(f'Get optimal allocation: {df.shape[0]} assets')
-
-        start = '2020-06-01'
+        start = '2017-06-01'
         end = datetime.datetime.today().strftime('%Y-%m-%d')
+        nb_asset_selected = 10
 
-        get_optimal_assets(df=df, start=start, end=end)
+        df = pd.read_csv('id_all_assets_converted.csv')
+
+        logger.info('Get optimal allocation for all assets: Data imported')
+        logger.info(f'Get optimal allocation for all assets: {df.shape[0]} assets')
+
+        get_optimal_assets(df=df, start=start, end=end, nb_assets_selected=nb_asset_selected, previously_selected=False)
+
+        df = pd.read_csv('id_selected_assets_converted.csv')
+
+        logger.info('Get optimal allocation for selected assets: Data imported')
+        logger.info(f'Get optimal allocation for selected assets: {df.shape[0]} assets')
+
+        get_optimal_assets(df=df, start=start, end=end, nb_assets_selected=nb_asset_selected, previously_selected=True)

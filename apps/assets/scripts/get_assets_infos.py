@@ -65,11 +65,12 @@ def get_asset_info():
 
         try:
 
-            (value, variation, dividende, value_3_month, var_3_month, value_1_month, var_1_month, value_1_week, var_1_week,
+            (value, variation, dividende, value_3_month, var_3_month, value_1_month, var_1_month, value_1_week,
+             var_1_week,
              value_over_3_months, date_over_3_months) = get_info_for_one_asset_for_one_date(asset, date_today)
 
             if asset_info.count() == 0 and asset[0].name:
-                assetinfo, created = AssetsInfo.objects.get_or_create(
+                AssetsInfo.objects.get_or_create(
                     date_update=date_today,
                     id_asset=id_asset,
                     name=asset[0].name,
@@ -102,7 +103,6 @@ def get_asset_info():
                 asset.save()
             else:
                 logger.info(f'Get asset info: Asset considered {asset[0].name}')
-
 
         except Exception as e:
             logger.info(f'Get asset info - error: {e}')

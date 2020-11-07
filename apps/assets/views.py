@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 
-from .serializers import AssetsInfoSerializer
-from .models import AssetsInfo
+from .serializers import AssetsInfoSerializer, OptimalAssetsInfoSerializer
+from .models import AssetsInfo, OptimalAssetsInfo
 
 
 class AssetsInfoViewSet(viewsets.ModelViewSet):
@@ -9,6 +9,11 @@ class AssetsInfoViewSet(viewsets.ModelViewSet):
     serializer_class = AssetsInfoSerializer
 
 
-class Top5AssetsInfoViewSet(viewsets.ModelViewSet):
-    queryset = AssetsInfo.objects.all().exclude(name__isnull=True).order_by('-dividende', 'value')[:5]
-    serializer_class = AssetsInfoSerializer
+class TopOptimalAssetsInfoViewSet(viewsets.ModelViewSet):
+    queryset = OptimalAssetsInfo.objects.filter(previously_selected=False).exclude(id_asset__isnull=True)
+    serializer_class = OptimalAssetsInfoSerializer
+
+
+class TopOptimalAssetsInfoPreviouslySelectedViewSet(viewsets.ModelViewSet):
+    queryset = OptimalAssetsInfo.objects.filter(previously_selected=True).exclude(id_asset__isnull=True)
+    serializer_class = OptimalAssetsInfoSerializer
