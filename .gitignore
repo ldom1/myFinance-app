@@ -2,15 +2,6 @@
 .idea/*
 *.idea*
 
-*__pycache__/*
-*/__pycache__/*
-*/*/__pycache__/*
-
-*.pyc
-*/*.pyc
-*/*/*.pyc
-*/*/*/*.pyc
-
 *.DS_Store
 */.DS_Store
 */*/.DS_Store
