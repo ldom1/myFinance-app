@@ -2,7 +2,7 @@ from pandas_datareader import DataReader
 from pylab import legend, xlabel, ylabel, sqrt, ylim, \
     cov, sqrt, mean, std, plot, show, figure
 from numpy import array, zeros, matrix, ones, shape, linspace, hstack, busday_count
-from pandas import Series, DataFrame
+import pandas as pd
 from numpy.linalg import inv
 from tqdm import tqdm
 import logging
@@ -37,11 +37,17 @@ class Portfolio:
                         f'Get optimal allocation: Select asset with {nb_of_days_considered_min} days min - Asset: {symbol} with {historical_data.shape[0]} days')
                     self.asset[symbol] = historical_data
                     symbols_considered.append(symbol)
+                else:
+                    logger.info(f'Get optimal allocation: Asset {symbol}.')
+                    logger.info(f'Error: Not enough historic')
             except Exception as e:
                 logger.info(f'Get optimal allocation: Asset {symbol} not found.')
                 logger.info(f'Error: {e}')
 
         logger.info(f'Get optimal allocation: {len(symbols)} symbols (assets)')
+
+        # Keep only considered symbols
+        self.asset = {k: self.asset[k] for k in self.asset if k in symbols_considered}
 
         # Get Benchmark asset.
         self.benchmark = DataReader(bench, "yahoo", start=start, end=end)
@@ -50,31 +56,31 @@ class Portfolio:
         # Get returns, beta, alpha, and sharp ratio.
         iteration = 1
         for symbol in symbols_considered:
-            try:
-                logger.info(f'Get optimal allocation: iteration {iteration} - compute {symbol} metrics')
-                self.benchmark = self.benchmark.loc[self.benchmark.index.intersection(self.asset[symbol].index)]
-                self.asset[symbol] = self.asset[symbol].loc[self.asset[symbol].index.intersection(self.benchmark.index)]
-                logger.info(f'Get optimal allocation: iteration {iteration} - {symbol} shape: {self.asset[symbol].shape}')
-                logger.info(f'Get optimal allocation: iteration {iteration} - bench shape: {self.benchmark.shape}')
+            logger.info(f'---------')
+            logger.info(f'Get optimal allocation: Iteration: {iteration} / {len(symbols_considered)}')
+            logger.info(f'Get optimal allocation: Symbol consider: {symbol}')
+            self.benchmark = self.benchmark.loc[self.benchmark.index.intersection(self.asset[symbol].index)]
+            self.asset[symbol] = self.asset[symbol].loc[self.asset[symbol].index.intersection(self.benchmark.index)]
+            logger.info(
+                f'Get optimal allocation: {symbol} shape: {self.asset[symbol].shape}, bench shape: {self.benchmark.shape}')
 
-                # Get returns.
-                self.asset[symbol]['Return'] = self.asset[symbol]['Adj Close'].diff()
-                # Get Beta.
-                A = self.asset[symbol]['Return'].fillna(0)
-                B = self.benchmark['Return'].fillna(0)
+            # Get returns.
+            self.asset[symbol]['Return'] = self.asset[symbol]['Adj Close'].diff()
+            # Get Beta.
+            A = self.asset[symbol]['Return'].fillna(0)
+            B = self.benchmark['Return'].fillna(0)
 
-                self.asset[symbol]['Beta'] = cov(A, B)[0, 1] / cov(A, B)[1, 1]
-                # Get Alpha
-                self.asset[symbol]['Alpha'] = self.asset[symbol]['Return'] - \
-                                              self.asset[symbol]['Beta'] * self.benchmark['Return']
+            self.asset[symbol]['Beta'] = cov(A, B)[0, 1] / cov(A, B)[1, 1]
 
-                # Get Sharpe Ratio
-                tmp = self.asset[symbol]['Return']
-                self.asset[symbol]['Sharpe'] = \
-                    sqrt(len(tmp)) * mean(tmp.fillna(0)) / std(tmp.fillna(0))
-                iteration += 1
-            except Exception as e:
-                logger.info(f'Get optimal allocation: iteration {iteration} - error : {e} with symbol {symbol}')
+            # Get Alpha
+            self.asset[symbol]['Alpha'] = self.asset[symbol]['Return'] - \
+                                          self.asset[symbol]['Beta'] * self.benchmark['Return']
+
+            # Get Sharpe Ratio
+            tmp = self.asset[symbol]['Return']
+            self.asset[symbol]['Sharpe'] = \
+                sqrt(len(tmp)) * mean(tmp.fillna(0)) / std(tmp.fillna(0))
+            iteration += 1
 
         self.dates_to_consider = self.benchmark.index
 
@@ -86,11 +92,11 @@ class Portfolio:
 
     def betas(self):
         betas = [v['Beta'][0] for k, v in self.asset.items()]
-        return Series(betas, index=self.asset.keys())
+        return pd.Series(betas, index=self.asset.keys())
 
     def returns(self):
         returns = [v['Return'].dropna() for k, v in self.asset.items()]
-        return Series(returns, index=self.asset.keys())
+        return pd.Series(returns, index=self.asset.keys())
 
     def cov(self):
         keys, values = self.returns().keys(), self.returns().values
@@ -98,8 +104,10 @@ class Portfolio:
         values_balanced_in_dates = [y.loc[y.index.intersection(self.dates_to_consider)] for y in values]
         values_balanced_in_dates = [y.values for y in values_balanced_in_dates]
 
-        return DataFrame(
-            cov(array(values_balanced_in_dates)), index=keys, columns=keys)
+        df = pd.DataFrame(values_balanced_in_dates).T
+        df.index = self.dates_to_consider
+        df.columns = keys
+        return df.cov()
 
     def get_w(self, kind='sharpe'):
         V = self.cov()
@@ -117,7 +125,7 @@ class Portfolio:
         num = iV * e
         denom = e.T * iV * e
         w = array(num / denom).flatten()
-        return Series(w, index=self.asset.keys())
+        return pd.Series(w, index=self.asset.keys())
 
     def efficient_frontier_w(self, fp):
         wc = self.get_w(kind='characteristic')
@@ -128,7 +136,7 @@ class Portfolio:
 
         denom = fq - fc
         w = (fq - fp) * wc + (fp - fc) * wq
-        return Series(w / denom, index=self.asset.keys())
+        return pd.Series(w / denom, index=self.asset.keys())
 
     def efficient_frontier(self, xi=0.01, xf=4, npts=100, scale=10):
         frontier = linspace(xi, xf, npts)
@@ -143,7 +151,7 @@ class Portfolio:
             sharpe[i] = mean(tmp) / std(tmp) * sqrt(len(tmp))
             i += 1
         risk = rets / sharpe
-        return Series(rets, index=risk), sharpe.max()
+        return pd.Series(rets, index=risk), sharpe.max()
 
     def efficient_frontier_plot(self, xi=0.01, xf=4, npts=100, scale=0.1,
                                 col1='b', col2='r', newfig=1, plabel=''):
@@ -170,9 +178,9 @@ class Portfolio:
         iV = matrix(inv(V))
         num = iV * e * ret
         denom = e.T * iV * e
-        return Series(array(num / denom).flatten(), index=self.asset.keys())
+        return pd.Series(array(num / denom).flatten(), index=self.asset.keys())
 
     def ret_for_w(self, w):
         tmp = self.returns()
         tmpl = [v * wi for v, wi in zip(tmp.values, w)]
-        return Series(tmpl, index=tmp.keys()).sum()
+        return pd.Series(tmpl, index=tmp.keys()).sum()

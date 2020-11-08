@@ -1,5 +1,6 @@
 from pylab import *
 import pandas as pd
+from tqdm import tqdm
 from assets.scripts.src.quantpy.portfolio import Portfolio
 from assets.models import AssetsInfo, OptimalAssetsInfo
 
@@ -14,7 +15,7 @@ def add_current_asset_info(df):
     asset_info_df = asset_info_df.dropna(subset=['id_asset'])
     asset_info_df_latest = asset_info_df[asset_info_df.date_update == asset_info_df.date_update.max()]
 
-    asset_info_df_latest = asset_info_df_latest.drop(['id', 'name'], axis=1)
+    asset_info_df_latest = asset_info_df_latest.drop(['id'], axis=1)
 
     logger.info(f'Get optimal allocation: add asset info - initial shape: {df.shape}')
     df = df.merge(asset_info_df_latest, on='id_asset', how='inner')
@@ -26,7 +27,7 @@ def insert_df_in_db(df):
     logger.info(f'Insert df in db: Start ...')
     logger.info(f'Insertion of : {df.shape[0]} rows')
 
-    for index, row in df.iterrows():
+    for index, row in tqdm(df.iterrows()):
         try:
             if row['id_asset']:
                 OptimalAssetsInfo.objects.get_or_create(
@@ -91,11 +92,11 @@ def get_optimal_assets(df, start, end, nb_assets_selected, previously_selected):
 
     logger.info(f'Get optimal allocation: Done.')
 
-    logger.info(f'Get optimal allocation: Sort values by weight and select: {nb_assets_selected} first.')
+    logger.info(f'Get optimal allocation: Sort values by weight and select {nb_assets_selected} first.')
     df_res = df_res.sort_values(by='weight', ascending=False)
     df_res = df_res.iloc[:nb_assets_selected]
     df_res['previously_selected'] = previously_selected
 
     df_res.to_csv(f'test_optim_{str(previously_selected)}.csv', index=False, header=True)
 
-    #insert_df_in_db(df=df_res)
+    insert_df_in_db(df=df_res)

@@ -3,7 +3,7 @@ from django.core.management.base import BaseCommand, CommandError
 # import
 import pandas as pd
 import datetime
-from assets.scripts.get_optimal_assets import get_optimal_assets
+from apps.assets.scripts.get_optimal_assets import get_optimal_assets
 
 import logging
 
@@ -18,18 +18,19 @@ class Command(BaseCommand):
         # Get Optimal data on all assets
         start = '2017-06-01'
         end = datetime.datetime.today().strftime('%Y-%m-%d')
-        nb_asset_selected = 10
+        nb_assets_selected = 10
 
         df = pd.read_csv('id_all_assets_converted.csv')
 
         logger.info('Get optimal allocation for all assets: Data imported')
         logger.info(f'Get optimal allocation for all assets: {df.shape[0]} assets')
 
-        get_optimal_assets(df=df, start=start, end=end, nb_assets_selected=nb_asset_selected, previously_selected=False)
+        get_optimal_assets(df=df, start=start, end=end, nb_assets_selected=nb_assets_selected,
+                           previously_selected=False)
 
         df = pd.read_csv('id_selected_assets_converted.csv')
 
         logger.info('Get optimal allocation for selected assets: Data imported')
         logger.info(f'Get optimal allocation for selected assets: {df.shape[0]} assets')
 
-        get_optimal_assets(df=df, start=start, end=end, nb_assets_selected=nb_asset_selected, previously_selected=True)
+        get_optimal_assets(df=df, start=start, end=end, nb_assets_selected=nb_assets_selected, previously_selected=True)

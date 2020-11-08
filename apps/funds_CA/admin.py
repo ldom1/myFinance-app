@@ -1,3 +1,4 @@
 from django.contrib import admin
+from funds_CA.models import fundsCA
 
-# Register your models here.
+admin.site.register(fundsCA)
