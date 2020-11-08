@@ -1,9 +1,9 @@
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 
 # import
 import pandas as pd
 import datetime
-from apps.assets.scripts.get_optimal_assets import get_optimal_assets
+from code.assets.get_optimal_assets import get_optimal_assets
 
 import logging
 
@@ -33,4 +33,5 @@ class Command(BaseCommand):
         logger.info('Get optimal allocation for selected assets: Data imported')
         logger.info(f'Get optimal allocation for selected assets: {df.shape[0]} assets')
 
-        get_optimal_assets(df=df, start=start, end=end, nb_assets_selected=nb_assets_selected, previously_selected=True)
+        get_optimal_assets(df=df, start=start, end=end, nb_assets_selected=nb_assets_selected,
+                           previously_selected=True)

@@ -3,8 +3,7 @@ from datetime import datetime
 
 
 class userInfosSaved(models.Model):
-
-    date = models.DateTimeField(default= datetime.now, null=True, blank=True)
+    date = models.DateTimeField(default=datetime.now, null=True, blank=True)
     codePostal = models.IntegerField(null=True, blank=True)
     surface = models.IntegerField(null=True, blank=True)
     prix_m2_max = models.FloatField(null=True, blank=True)
@@ -13,3 +12,6 @@ class userInfosSaved(models.Model):
 
     def __unicode__(self):
         return "{0}".format(self.code, )
+
+    class Meta:
+        managed = True

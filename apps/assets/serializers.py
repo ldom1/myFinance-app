@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import AssetsInfo, OptimalAssetsInfo
+from .models import AssetsInfo, OptimAssetsInfo
 
 
 class AssetsInfoSerializer(serializers.HyperlinkedModelSerializer):
@@ -11,9 +11,9 @@ class AssetsInfoSerializer(serializers.HyperlinkedModelSerializer):
                   'var_1_week')
 
 
-class OptimalAssetsInfoSerializer(serializers.HyperlinkedModelSerializer):
+class OptimAssetsInfoSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = OptimalAssetsInfo
+        model = OptimAssetsInfo
         fields = ('date_update', 'id_asset', 'name', 'exchange', 'shortname', 'quoteType', 'symbol', 'index', 'value',
                   'variation', 'dividende', 'score', 'typeDisp', 'longname', 'weight', 'betas', 'weight_low_var',
                   'value_3_month', 'value_1_month', 'value_1_week', 'var_3_month', 'var_1_month',

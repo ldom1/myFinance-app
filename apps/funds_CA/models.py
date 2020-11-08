@@ -17,3 +17,6 @@ class fundsCA(models.Model):
 
     def __unicode__(self):
         return "{0}".format(self.code, )
+
+    class Meta:
+        managed = True

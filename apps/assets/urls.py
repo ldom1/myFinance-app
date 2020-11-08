@@ -4,8 +4,8 @@ from .views import *
 
 router = routers.DefaultRouter()
 router.register(r'assets_info', AssetsInfoViewSet)
-router.register(r'optimal_assets_info', TopOptimalAssetsInfoViewSet)
-router.register(r'optimal_assets_info_previously_selected', TopOptimalAssetsInfoPreviouslySelectedViewSet)
+router.register(r'optimal_assets_info', TopOptimAssetsInfoViewSet)
+router.register(r'optimal_assets_info_previously_selected', TopOptimAssetsInfoPreviouslySelectedViewSet)
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.

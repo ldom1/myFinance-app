@@ -1,7 +1,7 @@
 from rest_framework import viewsets
-
-from .serializers import AssetsInfoSerializer, OptimalAssetsInfoSerializer
-from .models import AssetsInfo, OptimalAssetsInfo
+from django.db.models import Max, F
+from .serializers import AssetsInfoSerializer, OptimAssetsInfoSerializer
+from .models import AssetsInfo, OptimAssetsInfo
 
 
 class AssetsInfoViewSet(viewsets.ModelViewSet):
@@ -9,11 +9,13 @@ class AssetsInfoViewSet(viewsets.ModelViewSet):
     serializer_class = AssetsInfoSerializer
 
 
-class TopOptimalAssetsInfoViewSet(viewsets.ModelViewSet):
-    queryset = OptimalAssetsInfo.objects.filter(previously_selected=False).exclude(id_asset__isnull=True)
-    serializer_class = OptimalAssetsInfoSerializer
+class TopOptimAssetsInfoViewSet(viewsets.ModelViewSet):
+    queryset = OptimAssetsInfo.objects.annotate(max_date=Max('date_update')).filter(date_update=F('max_date')).filter(
+        previously_selected=False).exclude(id_asset__isnull=True)
+    serializer_class = OptimAssetsInfoSerializer
 
 
-class TopOptimalAssetsInfoPreviouslySelectedViewSet(viewsets.ModelViewSet):
-    queryset = OptimalAssetsInfo.objects.filter(previously_selected=True).exclude(id_asset__isnull=True)
-    serializer_class = OptimalAssetsInfoSerializer
+class TopOptimAssetsInfoPreviouslySelectedViewSet(viewsets.ModelViewSet):
+    queryset = OptimAssetsInfo.objects.annotate(max_date=Max('date_update')).filter(date_update=F('max_date')).filter(
+        previously_selected=True).exclude(id_asset__isnull=True)
+    serializer_class = OptimAssetsInfoSerializer

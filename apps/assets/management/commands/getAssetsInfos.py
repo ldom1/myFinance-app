@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand, CommandError
 
 # import
-from assets.scripts.get_assets_infos import get_asset_info
+from code.assets.get_assets_infos import get_asset_info
 
 class Command(BaseCommand):
     help = 'Closes the specified poll for voting'

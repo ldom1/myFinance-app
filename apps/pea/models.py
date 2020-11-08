@@ -20,6 +20,9 @@ class PEA(models.Model):
     def __unicode__(self):
         return "{0}".format(self.code, )
 
+    class Meta:
+        managed = True
+
 
 class PEAHistory(models.Model):
     date = models.DateTimeField(null=True, blank=True)
@@ -34,6 +37,9 @@ class PEAHistory(models.Model):
 
     def __unicode__(self):
         return "{0}".format(self.code, )
+
+    class Meta:
+        managed = True
 
 
 class Order(models.Model):
@@ -58,3 +64,6 @@ class Order(models.Model):
 
     def __unicode__(self):
         return "{0}".format(self.code, )
+
+    class Meta:
+        managed = True

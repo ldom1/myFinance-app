@@ -1,4 +1,3 @@
-from django.contrib.postgres.fields import ArrayField
 from django.db import models
 
 
@@ -22,6 +21,9 @@ class Assets(models.Model):
     def __unicode__(self):
         return "{0}".format(self.code, )
 
+    class Meta:
+        managed = True
+
 
 class AssetsInfo(models.Model):
     date_update = models.DateTimeField(null=True, blank=True)
@@ -36,14 +38,16 @@ class AssetsInfo(models.Model):
     var_3_month = models.FloatField(null=True, blank=True)
     var_1_month = models.FloatField(null=True, blank=True)
     var_1_week = models.FloatField(null=True, blank=True)
-    date_over_3_months = ArrayField(models.DateTimeField(null=True, blank=True), null=True, blank=True)
-    value_over_3_months = ArrayField(models.FloatField(null=True, blank=True), null=True, blank=True)
 
     def __unicode__(self):
         return "{0}".format(self.code, )
 
+    class Meta:
+        managed = True
 
-class OptimalAssetsInfo(models.Model):
+
+class OptimAssetsInfo(models.Model):
+    date = models.DateTimeField(null=True, blank=True)
     date_update = models.DateTimeField(null=True, blank=True)
     id_asset = models.CharField(max_length=100, null=True, blank=True)
     name = models.CharField(max_length=100, null=True, blank=True)
@@ -71,3 +75,6 @@ class OptimalAssetsInfo(models.Model):
 
     def __unicode__(self):
         return "{0}".format(self.code, )
+
+    class Meta:
+        managed = True
