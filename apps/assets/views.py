@@ -10,12 +10,18 @@ class AssetsInfoViewSet(viewsets.ModelViewSet):
 
 
 class TopOptimAssetsInfoViewSet(viewsets.ModelViewSet):
-    queryset = OptimAssetsInfo.objects.annotate(max_date=Max('date_update')).filter(date_update=F('max_date')).filter(
-        previously_selected=False).exclude(id_asset__isnull=True)
+    previously_selected = False
+    last_date = OptimAssetsInfo.objects.filter(previously_selected=previously_selected).latest(
+        'date_update').date_update
+    queryset = OptimAssetsInfo.objects.filter(date_update=last_date).filter(
+        previously_selected=previously_selected).exclude(id_asset__isnull=True)
     serializer_class = OptimAssetsInfoSerializer
 
 
 class TopOptimAssetsInfoPreviouslySelectedViewSet(viewsets.ModelViewSet):
-    queryset = OptimAssetsInfo.objects.annotate(max_date=Max('date_update')).filter(date_update=F('max_date')).filter(
-        previously_selected=True).exclude(id_asset__isnull=True)
+    previously_selected = True
+    last_date = OptimAssetsInfo.objects.filter(previously_selected=previously_selected).latest(
+        'date_update').date_update
+    queryset = OptimAssetsInfo.objects.filter(date_update=last_date).filter(
+        previously_selected=previously_selected).exclude(id_asset__isnull=True)
     serializer_class = OptimAssetsInfoSerializer
