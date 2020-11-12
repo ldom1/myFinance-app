@@ -1,5 +1,4 @@
 from rest_framework import viewsets
-from django.db.models import Max, F
 from .serializers import AssetsInfoSerializer, OptimAssetsInfoSerializer
 from .models import AssetsInfo, OptimAssetsInfo
 
