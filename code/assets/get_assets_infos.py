@@ -52,7 +52,7 @@ def get_asset_info():
     today = datetime.today()
     date_today = date(today.year, today.month, today.day)
 
-    logger.info('Get asset info: Getting assets infos for:', date_today)
+    logger.info('Get asset info: Getting assets infos for:', date_today.strftime('%Y-%m-%d'))
 
     assets = Assets.objects.all()
 
