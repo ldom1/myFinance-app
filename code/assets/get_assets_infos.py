@@ -10,6 +10,8 @@ logger = logging.getLogger(__name__)
 
 
 def get_info_for_one_asset_for_one_date(asset, date_of_compute):
+
+    print(np.unique([y.date for y in asset]))
     a = asset.filter(date=date_of_compute)[0]
     value = a.value
     variation = a.variation
@@ -52,7 +54,7 @@ def get_asset_info():
     today = datetime.today()
     date_today = date(today.year, today.month, today.day)
 
-    logger.info('Get asset info: Getting assets infos for:', date_today.strftime('%Y-%m-%d'))
+    logger.info(f'Get asset info: Getting assets infos for: {date_today.strftime("%Y-%m-%d")}')
 
     assets = Assets.objects.all()
 
@@ -63,46 +65,42 @@ def get_asset_info():
 
         logger.info(f'Get asset info: Getting {asset[0].name} infos')
 
-        try:
+        (value, variation, dividende, value_3_month, var_3_month, value_1_month, var_1_month, value_1_week,
+         var_1_week,
+         value_over_3_months, date_over_3_months) = get_info_for_one_asset_for_one_date(asset=asset,
+                                                                                        date_of_compute=date_today)
 
-            (value, variation, dividende, value_3_month, var_3_month, value_1_month, var_1_month, value_1_week,
-             var_1_week,
-             value_over_3_months, date_over_3_months) = get_info_for_one_asset_for_one_date(asset, date_today)
-
-            if asset_info.count() == 0 and asset[0].name:
-                AssetsInfo.objects.get_or_create(
-                    date_update=date_today,
-                    id_asset=id_asset,
-                    name=asset[0].name,
-                    value=value,
-                    variation=variation,
-                    dividende=dividende,
-                    value_3_month=value_3_month,
-                    value_1_month=value_1_month,
-                    value_1_week=value_1_week,
-                    var_3_month=var_3_month,
-                    var_1_month=var_1_month,
-                    var_1_week=var_1_week,
-                    # date_over_3_months=date_over_3_months,
-                    # value_over_3_months=value_over_3_months
-                )
-            elif asset[0].name:
-                asset = asset_info[0]
-                asset.date_update = date_today
-                asset.value = value
-                asset.variation = variation
-                asset.dividende = dividende
-                asset.value_3_month = value_3_month
-                asset.value_1_month = value_1_month
-                asset.value_1_week = value_1_week
-                asset.var_3_month = var_3_month
-                asset.var_1_month = var_1_month
-                asset.var_1_week = var_1_week
-                # asset.date_over_3_months = date_over_3_months
-                # asset.value_over_3_months = value_over_3_months
-                asset.save()
-            else:
-                logger.info(f'Get asset info: Asset considered {asset[0].name}')
-
-        except Exception as e:
-            logger.info(f'Get asset info - error: {e}')
+        if asset_info.count() == 0 and asset[0].name:
+            AssetsInfo.objects.get_or_create(
+                date_update=date_today,
+                id_asset=id_asset,
+                name=asset[0].name,
+                value=value,
+                variation=variation,
+                dividende=dividende,
+                value_3_month=value_3_month,
+                value_1_month=value_1_month,
+                value_1_week=value_1_week,
+                var_3_month=var_3_month,
+                var_1_month=var_1_month,
+                var_1_week=var_1_week,
+                # date_over_3_months=date_over_3_months,
+                # value_over_3_months=value_over_3_months
+            )
+        elif asset[0].name:
+            asset = asset_info[0]
+            asset.date_update = date_today
+            asset.value = value
+            asset.variation = variation
+            asset.dividende = dividende
+            asset.value_3_month = value_3_month
+            asset.value_1_month = value_1_month
+            asset.value_1_week = value_1_week
+            asset.var_3_month = var_3_month
+            asset.var_1_month = var_1_month
+            asset.var_1_week = var_1_week
+            # asset.date_over_3_months = date_over_3_months
+            # asset.value_over_3_months = value_over_3_months
+            asset.save()
+        else:
+            logger.info(f'Get asset info: Asset considered {asset[0].name}')

@@ -20,15 +20,20 @@ def get_urls_for_each_asset():
 
     for page in tqdm(ALL_PAGES):
         all_code = get_code(page)
-        all_infos = all_code('tbody', 'c-table__body')[0]('div', 'o-pack__item u-ellipsis u-color-cerulean')
+
+        all_infos = all_code.findAll('tbody')[1].findAll('tr')
         for elt in all_infos:
-            urls.append('https://www.boursorama.com' + elt.a['href'])
+            info = elt.findAll('div')[-1]
+            logging.info(f'Assets - Get {info.get_text()} url')
+            urls.append('https://www.boursorama.com' + info.a['href'])
+    print(urls)
     return list(set(urls))
 
 
 def extract_html_code_from_one_page(html_code):
     logging.info('Assets - Scrap one page: extract all html code from page')
-    return html_code('div', 'c-faceplate__body')
+    html_code_extracted = html_code('div', 'c-faceplate__body')
+    return html_code_extracted
 
 
 def extract_name_of_asset_from_one_page(html_code_extracted):

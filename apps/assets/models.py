@@ -3,7 +3,6 @@ from django.db import models
 
 class Assets(models.Model):
     date = models.DateTimeField(null=True, blank=True)
-
     id_asset = models.CharField(max_length=100, null=True, blank=True)
     url = models.URLField(max_length=300, null=True, blank=True)
     name = models.CharField(max_length=100, null=True, blank=True)
