@@ -69,7 +69,7 @@ def get_asset_info():
              var_1_week,
              value_over_3_months, date_over_3_months) = get_info_for_one_asset_for_one_date(asset, date_today)
 
-            if asset[0].name:
+            if asset_info.count() == 0 and asset[0].name:
                 AssetsInfo.objects.get_or_create(
                     date_update=date_today,
                     id_asset=id_asset,
