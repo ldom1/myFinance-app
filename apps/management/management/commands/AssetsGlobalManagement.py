@@ -9,8 +9,8 @@ logger = logging.getLogger(__name__)
 class Command(BaseCommand):
     help = 'Run all commands'
     commands = [
-        # 'python3 manage.py generateAssetsBDD',
-        # 'python3 manage.py getAssetsInfos',
+        'python3 manage.py generateAssetsBDD',
+        'python3 manage.py getAssetsInfos',
         'python3 manage.py getOptimalAssets',
         'python3 manage.py getAndCheckAssetsLimits',
     ]
