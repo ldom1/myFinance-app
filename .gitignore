@@ -9,3 +9,5 @@
 *.ipynb
 .ipynb_checkpoints/*
 test.ipynb
+
+test_code_mngt.sh
