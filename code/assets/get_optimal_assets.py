@@ -19,7 +19,7 @@ def add_current_asset_info(df):
     asset_info_df_latest = asset_info_df_latest.drop(['id'], axis=1)
 
     logger.info(f'Get optimal allocation: add asset info - initial shape: {df.shape}')
-    df = df.merge(asset_info_df_latest, on='id_asset', how='inner')
+    df = df.merge(asset_info_df_latest, on=['id_asset', 'longname', 'symbol'], how='inner')
     logger.info(f'Get optimal allocation: add asset info - result shape: {df.shape}')
     return df
 
@@ -36,6 +36,7 @@ def insert_df_in_db(df):
                     date_update=row['date_update'],
                     id_asset=row['id_asset'],
                     name=row['name'],
+                    url=row['url'],
                     exchange=row['exchange'],
                     shortname=row['shortname'],
                     quoteType=row['quoteType'],
@@ -92,6 +93,9 @@ def get_optimal_assets(df, start, end, nb_assets_selected, previously_selected):
     df_res = df_res.sort_values(by='weight_low_var', ascending=False)
 
     df_res = add_current_asset_info(df=df_res)
+
+    logger.info(f'Get optimal allocation: Drop assets where name or url not retrieve from boursorama website.')
+    df_res = df_res.dropna(subset=['name', 'url'])
 
     logger.info(f'Get optimal allocation: Done.')
 

@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'funds_CA',
     'assets',
     'rest_framework',
+    'management',
 ]
 
 MIDDLEWARE = [

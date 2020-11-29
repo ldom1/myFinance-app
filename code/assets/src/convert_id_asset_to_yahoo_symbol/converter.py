@@ -51,4 +51,4 @@ for asset in tqdm(assets_list):
 
     time.sleep(0.5)
 
-pd.DataFrame(dict_res).to_csv('id_asset_full_list.csv', index=False, header=True)
+pd.DataFrame(dict_res).to_csv('test.csv', index=False, header=True)

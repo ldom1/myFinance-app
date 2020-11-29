@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand, CommandError
 
 # import
-from assets.models import Assets
+from code.assets.get_and_manage_assets_limits import add_assets_info_to_assets_check_limit, update_limits
 
 
 class Command(BaseCommand):
@@ -9,7 +9,5 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         # Add data to BDD
-        assets = Assets.objects.all()
-
-        for asset in assets:
-            asset.delete()
+        add_assets_info_to_assets_check_limit()
+        update_limits()
