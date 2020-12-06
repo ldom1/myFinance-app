@@ -111,16 +111,19 @@ def get_assets_info_and_insert_in_db():
 
     for index, asset in tqdm(df.iterrows()):
 
-        logger.info(f"Get asset info: Getting assets infos for: {asset['longname']} - {iteration / df.shape[0]}")
-
-        asset_historic = DataReader(asset['symbol'], "yahoo", start=start, end=end)
-        asset_historic['return'] = asset_historic['Adj Close'].diff()
-        asset_historic['variation'] = asset_historic['return'] / asset_historic['Adj Close'].shift(1)
+        logger.info(f"Get asset info: Getting assets infos for: {asset['longname']} - {iteration}/{df.shape[0]}")
 
         try:
-            insert_value_in_db(id_asset=asset['id_asset'], longname=asset['longname'],
-                               symbol=asset['symbol'], asset_historic=asset_historic,
-                               my_assets=my_assets)
+            asset_historic = DataReader(asset['symbol'], "yahoo", start=start, end=end)
+            asset_historic['return'] = asset_historic['Adj Close'].diff()
+            asset_historic['variation'] = asset_historic['return'] / asset_historic['Adj Close'].shift(1)
+
+            try:
+                insert_value_in_db(id_asset=asset['id_asset'], longname=asset['longname'],
+                                   symbol=asset['symbol'], asset_historic=asset_historic,
+                                   my_assets=my_assets)
+            except Exception as e:
+                logger.info(f"Get asset info: ERROR: {e}")
         except Exception as e:
             logger.info(f"Get asset info: ERROR: {e}")
 
