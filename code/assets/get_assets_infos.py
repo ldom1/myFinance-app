@@ -107,9 +107,11 @@ def get_assets_info_and_insert_in_db():
 
     logger.info(f'Get asset info: Getting assets infos on {datetime.datetime.today().strftime("%Y-%m-%d")}')
 
+    iteration = 1
+
     for index, asset in tqdm(df.iterrows()):
 
-        logger.info(f"Get asset info: Getting assets infos for: {asset['longname']}")
+        logger.info(f"Get asset info: Getting assets infos for: {asset['longname']} - {iteration / df.shape[0]}")
 
         asset_historic = DataReader(asset['symbol'], "yahoo", start=start, end=end)
         asset_historic['return'] = asset_historic['Adj Close'].diff()
@@ -120,4 +122,6 @@ def get_assets_info_and_insert_in_db():
                                symbol=asset['symbol'], asset_historic=asset_historic,
                                my_assets=my_assets)
         except Exception as e:
-            logger.info(f"Get asset info: Getting assets infos - error: {e}")
+            logger.info(f"Get asset info: ERROR: {e}")
+
+        iteration += 1

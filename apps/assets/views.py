@@ -36,4 +36,5 @@ class AssetsCheckLimitsViewSet(viewsets.ModelViewSet):
 class AssetsCheckLimitsAssetsNamesViewSet(viewsets.ModelViewSet):
     queryset = AssetsCheckLimits.objects.exclude(name__isnull=True).order_by('name')
     serializer_class = AssetsLimitCheckerSerializer
+
 '''
