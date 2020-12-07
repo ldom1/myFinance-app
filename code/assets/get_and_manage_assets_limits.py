@@ -10,9 +10,10 @@ logger = logging.getLogger(__name__)
 
 
 def add_assets_info_to_assets_check_limit():
+    iteration = 1
     for asset_info in tqdm(AssetsInfo.objects.all()):
 
-        logger.info(f"Add asset info in asset check limits: {asset_info.name}")
+        logger.info(f"Add asset info in asset check limits: {asset_info.name} ({datetime.datetime.today()})")
 
         if AssetsCheckLimits.objects.filter(id_asset=asset_info.id_asset).exists():
             logger.info(f"Add asset info in asset check limits: {asset_info.name} already exists")

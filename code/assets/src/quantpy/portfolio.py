@@ -6,6 +6,7 @@ import pandas as pd
 from numpy.linalg import inv
 from tqdm import tqdm
 import logging
+import datetime
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -57,7 +58,7 @@ class Portfolio:
         iteration = 1
         for symbol in symbols_considered:
             logger.info(f'---------')
-            logger.info(f'Get optimal allocation: Iteration: {iteration} / {len(symbols_considered)}')
+            logger.info(f'Get optimal allocation: Iteration: {iteration}/{len(symbols_considered)} ({datetime.datetime.today()})')
             logger.info(f'Get optimal allocation: Symbol consider: {symbol}')
             self.benchmark = self.benchmark.loc[self.benchmark.index.intersection(self.asset[symbol].index)]
             self.asset[symbol] = self.asset[symbol].loc[self.asset[symbol].index.intersection(self.benchmark.index)]

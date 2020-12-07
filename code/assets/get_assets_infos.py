@@ -111,7 +111,8 @@ def get_assets_info_and_insert_in_db():
 
     for index, asset in tqdm(df.iterrows()):
 
-        logger.info(f"Get asset info: Getting assets infos for: {asset['longname']} - {iteration}/{df.shape[0]}")
+        logger.info(
+            f"Get asset info: Getting assets infos for: {asset['longname']} - Iteration {iteration}/{df.shape[0]} ({datetime.datetime.today()})")
 
         try:
             asset_historic = DataReader(asset['symbol'], "yahoo", start=start, end=end)
