@@ -13,7 +13,11 @@ logger = logging.getLogger(__name__)
 def get_value_today(asset_historic, last_date_considered):
     logger.info(f'Get asset info: get current value')
     asset = asset_historic.loc[last_date_considered]
-    return asset['Adj Close'], asset['return'], asset['variation']
+    try:
+        return asset['Adj Close'], asset['return'], asset['variation']
+    except Exception as e:
+        logger.info(f'Get asset info: get value today - error: {e}')
+        return None, None, None
 
 
 def get_value_and_variation_over_time(asset_historic, last_date_considered, month=None, day=None):
