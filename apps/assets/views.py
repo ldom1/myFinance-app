@@ -3,7 +3,7 @@ from django.db.models import Q
 from .serializers import AssetsInfoSerializer, OptimAssetsInfoSerializer, AssetsLimitCheckerSerializer
 from .models import AssetsInfo, OptimAssetsInfo, AssetsCheckLimits
 
-
+'''
 class AssetsInfoViewSet(viewsets.ModelViewSet):
     queryset = AssetsInfo.objects.all().order_by('-dividende', 'value')
     serializer_class = AssetsInfoSerializer
@@ -36,3 +36,4 @@ class AssetsCheckLimitsViewSet(viewsets.ModelViewSet):
 class AssetsCheckLimitsAssetsNamesViewSet(viewsets.ModelViewSet):
     queryset = AssetsCheckLimits.objects.exclude(name__isnull=True).order_by('name')
     serializer_class = AssetsLimitCheckerSerializer
+'''
