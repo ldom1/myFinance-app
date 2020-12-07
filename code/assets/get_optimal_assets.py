@@ -104,6 +104,4 @@ def get_optimal_assets(df, start, end, nb_assets_selected, previously_selected):
     df_res = df_res.iloc[:nb_assets_selected]
     df_res['previously_selected'] = previously_selected
 
-    df_res = df_res.fillna('')
-
     insert_df_in_db(df=df_res)
