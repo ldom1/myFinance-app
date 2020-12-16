@@ -15,7 +15,7 @@ class TopOptimAssetsInfoViewSet(viewsets.ModelViewSet):
     last_date = OptimAssetsInfo.objects.filter(previously_selected=previously_selected).latest(
         'date_update').date_update
     queryset = OptimAssetsInfo.objects.filter(date_update=last_date).filter(
-        previously_selected=previously_selected).exclude(id_asset__isnull=True)
+        previously_selected=previously_selected).exclude(id_asset__isnull=True).order_by('-weight')
     serializer_class = OptimAssetsInfoSerializer
 
 
@@ -24,7 +24,7 @@ class TopOptimAssetsInfoPreviouslySelectedViewSet(viewsets.ModelViewSet):
     last_date = OptimAssetsInfo.objects.filter(previously_selected=previously_selected).latest(
         'date_update').date_update
     queryset = OptimAssetsInfo.objects.filter(date_update=last_date).filter(
-        previously_selected=previously_selected).exclude(id_asset__isnull=True)
+        previously_selected=previously_selected).exclude(id_asset__isnull=True).order_by('-weight')
     serializer_class = OptimAssetsInfoSerializer
 
 
