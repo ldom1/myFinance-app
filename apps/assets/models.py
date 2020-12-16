@@ -103,3 +103,26 @@ class AssetsCheckLimits(models.Model):
 
     class Meta:
         managed = True
+
+
+class RecommendedAssetsToBuy(models.Model):
+    date = models.DateTimeField(null=True, blank=True)
+    date_date = models.DateTimeField(null=True, blank=True)
+    id_asset = models.CharField(max_length=100, null=True, blank=True)
+    name = models.CharField(max_length=100, null=True, blank=True)
+    url = models.URLField(max_length=300, null=True, blank=True)
+    action = models.CharField(max_length=100, null=True, blank=True)
+    value = models.FloatField(null=True, blank=True)
+    value_objective = models.FloatField(null=True, blank=True)
+    potential_percent = models.FloatField(null=True, blank=True)
+    nb_analysts = models.IntegerField(null=True, blank=True)
+    net_benefit_in_eur = models.FloatField(null=True, blank=True)
+    rentability_n_percent = models.FloatField(null=True, blank=True)
+    price_earning_ratio_n = models.FloatField(null=True, blank=True)
+    price_earning_ratio_n_plus_1 = models.FloatField(null=True, blank=True)
+
+    def __unicode__(self):
+        return "{0}".format(self.code, )
+
+    class Meta:
+        managed = True

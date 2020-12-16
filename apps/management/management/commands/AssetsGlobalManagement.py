@@ -13,6 +13,7 @@ class Command(BaseCommand):
         'python3 manage.py getAssetsInfos',
         'python3 manage.py getOptimalAssets',
         'python3 manage.py getAndCheckAssetsLimits',
+        'python3 manage.py getRecommendedAssets'
     ]
 
     def handle(self, *args, **options):

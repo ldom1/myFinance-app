@@ -14,7 +14,6 @@ def get_code(url):
     headers = {'User-Agent': generate_user_agent(device_type="desktop",
                                                  os=('mac', 'linux'))}
     # Open the url file and get the html code of the page
-    req = requests.Session()
     req = requests.get(url, headers=headers)
     return soup(req.text, "lxml")
 

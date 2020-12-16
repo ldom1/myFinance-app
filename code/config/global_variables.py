@@ -29,9 +29,16 @@ URLS_FUNDS_CA = ['https://www.boursorama.com/bourse/opcvm/cours/0P00016DRV/',
                  'https://www.boursorama.com/bourse/opcvm/cours/0P0001EONQ/',
                  'https://www.boursorama.com/bourse/opcvm/cours/0P0001FFVK/',
                  'https://www.boursorama.com/bourse/opcvm/cours/0P0001HETC/',
-                 'https://www.boursorama.com/bourse/opcvm/cours/0P00011RIT/']
+                 'https://www.boursorama.com/bourse/opcvm/cours/0P00011RIT/'
+                 ]
 
 nb_page = 15
 ALL_PAGES = [
     f'https://www.boursorama.com/bourse/actions/cotations/page-{i}?quotation_az_filter%5Bmarket%5D=SRD&quotation_az_filter%5Bletter%5D=&quotation_az_filter%5BpeaEligibility%5D=1&quotation_az_filter%5Bfilter%5D=&pagination_1447025609='
-    for i in range(1, nb_page + 1)]
+    for i in range(1, nb_page + 1)
+]
+
+URLS_RECOMMENDED_ASSETS = [
+    f"https://www.boursorama.com/bourse/actions/consensus/recommandations-paris/page-{i}?national_market_filter%5Bmarket%5D=1rPCAC&national_market_filter%5Bsector%5D=&national_market_filter%5Banalysts%5D=10&national_market_filter%5Bperiod%5D=2021&national_market_filter%5Bfilter%5D=&sortColumn=consPotential&orderAsc=0"
+    for i in range(1, 4)
+]
