@@ -41,5 +41,5 @@ class AssetsCheckLimitsAssetsNamesViewSet(viewsets.ModelViewSet):
 
 class RecommendedAssetsViewSet(viewsets.ModelViewSet):
     last_date = RecommendedAssetsToBuy.objects.latest('date_date').date_date
-    queryset = RecommendedAssetsToBuy.objects.filter(date_date=last_date)
+    queryset = RecommendedAssetsToBuy.objects.filter(date_date=last_date).order_by('-potential_percent')
     serializer_class = RecommendedAssetsSerializer
