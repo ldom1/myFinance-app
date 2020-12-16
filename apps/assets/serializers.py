@@ -34,6 +34,6 @@ class AssetsLimitCheckerSerializer(serializers.HyperlinkedModelSerializer):
 class RecommendedAssetsSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = RecommendedAssetsToBuy
-        fields = ('date', 'id_asset', 'name', 'url', 'action', 'value',
+        fields = ('date', 'date_date', 'id_asset', 'name', 'url', 'action', 'value',
                   'value_objective', 'potential_percent', 'nb_analysts', 'net_benefit_in_eur',
                   'rentability_n_percent', 'price_earning_ratio_n', 'price_earning_ratio_n_plus_1')
