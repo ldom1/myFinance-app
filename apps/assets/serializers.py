@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import AssetsInfo, OptimAssetsInfo, AssetsCheckLimits
+from .models import AssetsInfo, OptimAssetsInfo, AssetsCheckLimits, RecommendedAssetsToBuy
 
 
 class AssetsInfoSerializer(serializers.HyperlinkedModelSerializer):
@@ -15,7 +15,7 @@ class OptimAssetsInfoSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = OptimAssetsInfo
         fields = ('date_update', 'id_asset', 'name', 'url', 'shortname', 'value',
-                  'variation', 'dividende',  'longname', 'date')
+                  'variation', 'dividende', 'longname', 'date')
 
 
 class AssetsLimitCheckerSerializer(serializers.HyperlinkedModelSerializer):
@@ -29,3 +29,11 @@ class AssetsLimitCheckerSerializer(serializers.HyperlinkedModelSerializer):
             defaults={'down_limit': validated_data.get('down_limit', None),
                       'up_limit': validated_data.get('up_limit', None)})
         return asset_limit
+
+
+class RecommendedAssetsSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = RecommendedAssetsToBuy
+        fields = ('date', 'id_asset', 'name', 'url', 'action', 'value',
+                  'value_objective', 'potential_percent', 'nb_analysts', 'net_benefit_in_eur',
+                  'rentability_n_percent', 'price_earning_ratio_n', 'price_earning_ratio_n_plus_1')

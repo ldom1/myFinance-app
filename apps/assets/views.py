@@ -1,7 +1,8 @@
 from rest_framework import viewsets
 from django.db.models import Q
-from .serializers import AssetsInfoSerializer, OptimAssetsInfoSerializer, AssetsLimitCheckerSerializer
-from .models import AssetsInfo, OptimAssetsInfo, AssetsCheckLimits
+from .serializers import AssetsInfoSerializer, OptimAssetsInfoSerializer, AssetsLimitCheckerSerializer, \
+    RecommendedAssetsSerializer
+from .models import AssetsInfo, OptimAssetsInfo, AssetsCheckLimits, RecommendedAssetsToBuy
 
 
 class AssetsInfoViewSet(viewsets.ModelViewSet):
@@ -36,3 +37,9 @@ class AssetsCheckLimitsViewSet(viewsets.ModelViewSet):
 class AssetsCheckLimitsAssetsNamesViewSet(viewsets.ModelViewSet):
     queryset = AssetsCheckLimits.objects.exclude(name__isnull=True).order_by('name')
     serializer_class = AssetsLimitCheckerSerializer
+
+
+class RecommendedAssetsViewSet(viewsets.ModelViewSet):
+    last_date = RecommendedAssetsToBuy.objects.latest('date_date').date_date
+    queryset = RecommendedAssetsToBuy.objects.filter(date_date=last_date)
+    serializer_class = RecommendedAssetsSerializer
