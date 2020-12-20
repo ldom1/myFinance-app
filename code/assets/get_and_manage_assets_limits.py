@@ -52,10 +52,9 @@ def add_assets_info_to_assets_check_limit():
             logging.info(f'Add asset info in asset check limits - ERROR: {e}')
 
 
-def get_asset_value(symbol):
-    today = datetime.datetime.today().strftime('%Y-%m-%d')
-    asset_historic = DataReader(symbol, "yahoo", start=today, end=today)
-    return asset_historic['Adj Close'].values[0]
+def get_asset_value(id_asset):
+    asset_info = AssetsInfo.objects.filter(id_asset=id_asset)[0]
+    return asset_info.value
 
 
 def get_asset_recommended_info(id_asset):
@@ -73,17 +72,13 @@ def update_up_limit():
     for asset in assets_limits:
 
         logger.info(f"Get and check asset limits: update up limit: {asset.longname}")
+        asset_value = get_asset_value(id_asset=asset.id_asset)
 
-        try:
-            asset_value = get_asset_value(asset.symbol)
-
-            if asset_value >= asset.up_limit:
-                logger.info(
-                    f"Get and check asset limits: up limit knocked: current value: {asset_value} - limit {asset.up_limit}")
-                asset.up_limit_knocked = True
-                asset.save()
-        except Exception as e:
-            logger.info(f"Get and check asset limits: update up limit: ERROR {e}")
+        if asset_value >= asset.up_limit:
+            logger.info(
+                f"Get and check asset limits: up limit knocked: current value: {asset_value} - limit {asset.up_limit}")
+            asset.up_limit_knocked = True
+            asset.save()
 
 
 def update_down_limit():
@@ -93,16 +88,13 @@ def update_down_limit():
 
         logger.info(f"Get and check asset limits: update down limit: {asset.longname}")
 
-        try:
-            asset_value = get_asset_value(asset.symbol)
+        asset_value = get_asset_value(id_asset=asset.id_asset)
 
-            if asset_value <= asset.down_limit:
-                logger.info(
-                    f"Get and check asset limits: down limit knocked: current value: {asset_value} - limit {asset.down_limit}")
-                asset.down_limit_knocked = True
-                asset.save()
-        except Exception as e:
-            logger.info(f"Get and check asset limits: update down limit: ERROR {e}")
+        if asset_value <= asset.down_limit:
+            logger.info(
+                f"Get and check asset limits: down limit knocked: current value: {asset_value} - limit {asset.down_limit}")
+            asset.down_limit_knocked = True
+            asset.save()
 
 
 def update_limits():
