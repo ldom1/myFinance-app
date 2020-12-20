@@ -97,6 +97,10 @@ class AssetsCheckLimits(models.Model):
     down_limit_knocked = models.BooleanField(null=True, blank=True)
     up_limit = models.FloatField(null=True, blank=True)
     up_limit_knocked = models.BooleanField(null=True, blank=True)
+    url = models.URLField(max_length=300, null=True, blank=True)
+    value = models.FloatField(null=True, blank=True)
+    value_objective = models.FloatField(null=True, blank=True)
+    potential_percent = models.FloatField(null=True, blank=True)
 
     def __unicode__(self):
         return "{0}".format(self.code, )

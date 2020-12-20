@@ -21,7 +21,9 @@ class OptimAssetsInfoSerializer(serializers.HyperlinkedModelSerializer):
 class AssetsLimitCheckerSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = AssetsCheckLimits
-        fields = ('name', 'down_limit', 'up_limit')
+        fields = (
+            'name', 'down_limit', 'up_limit', 'down_limit_knocked', 'up_limit_knocked', 'url', 'value',
+            'value_objective')
 
     def create(self, validated_data):
         asset_limit, created = AssetsCheckLimits.objects.update_or_create(

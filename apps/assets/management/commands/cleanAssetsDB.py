@@ -1,7 +1,5 @@
-from django.core.management.base import BaseCommand, CommandError
-
-# import
-from assets.models import AssetsInfo, OptimAssetsInfo, AssetsCheckLimits
+from django.core.management.base import BaseCommand
+import os
 import logging
 
 logging.basicConfig(level=logging.INFO)
@@ -9,18 +7,14 @@ logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
-    help = 'Closes the specified poll for voting'
+    help = 'Run all commands'
+    commands = [
+        'python3 manage.py cleanAssetsInfoDB',
+        'python3 manage.py cleanAssetsLimitsDB',
+        'python3 manage.py cleanOptimAssetsInfoDB',
+    ]
 
     def handle(self, *args, **options):
-
-        logger.info(f'Clean asset DB: Clean assets infos ...')
-        for asset in AssetsInfo.objects.all():
-            asset.delete()
-
-        logger.info(f'Clean asset DB: Clean optimal assets ...')
-        for asset in OptimAssetsInfo.objects.all():
-            asset.delete()
-
-        logger.info(f'Clean asset DB: Clean assets check list ...')
-        for asset in AssetsCheckLimits.objects.all():
-            asset.delete()
+        for command in self.commands:
+            logger.info(f'Run all: run command: {command}')
+            os.system(command)

@@ -45,7 +45,7 @@ def convert_text_to_float(text):
             text_cleaned = text_cleaned.replace('%', '')
             return float(text_cleaned) / 100
         elif text_cleaned == 'Atteint':
-            return float(100)
+            return float(1)
         else:
             return clean_text(text)
 
