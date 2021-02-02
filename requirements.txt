@@ -3,7 +3,7 @@ asgiref==3.2.10
 attrs==20.1.0
 backcall==0.2.0
 beautifulsoup4==4.9.1
-bleach==3.1.5
+bleach==3.3.0
 blessings==1.7
 bootstrap4==0.1.0
 bs4==0.0.1
