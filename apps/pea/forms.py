@@ -27,7 +27,6 @@ class RegisterOrderFundsForm(forms.Form):
 
 
 class RegisterOrderAssetForm(forms.Form):
-    """
     PEA = apps.get_model('pea', 'PEA')
     assets = apps.get_model('assets', 'Assets')
 
@@ -46,7 +45,7 @@ class RegisterOrderAssetForm(forms.Form):
     type_asset = forms.ChoiceField(choices=choices_type_asset, required=True)
     initial_amount = forms.IntegerField(required=True)
     name_pea = forms.ChoiceField(choices=choices_pea, required=True)
-    currency = forms.ChoiceField(choices=choices_curr, required=True)"""
+    currency = forms.ChoiceField(choices=choices_curr, required=True)
 
 
 class RegisterPeaForm(forms.Form):
